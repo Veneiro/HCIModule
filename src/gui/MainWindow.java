@@ -21,25 +21,21 @@ import javax.swing.event.ChangeListener;
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = 418969130762685793L;
+	
+	//PANELS
 	private JPanel contentPane;
 	private JPanel pnMainContent;
 	private JPanel pnMainWindow;
 	private JPanel pnHelp;
-	private JButton btnContinue;
 	private JPanel pnSize;
-	private JLabel lblTitle;
-	private JLabel lblContinue;
 	private JPanel pnContinue;
-	private JButton btnHelp;
 	private JPanel pnSizeLabel;
 	private JPanel pnSizeSlider;
-	private JLabel lblChangeSize;
 	private JPanel pnWestGap;
 	private JPanel pnEastGap;
 	private JPanel pnWestGapHelp;
 	private JPanel pnEastGapHelp;
 	private JPanel pnSouthGapHelp;
-	private JSlider slResize;
 	private JPanel panel;
 	private JPanel pnNorthGap;
 	private JPanel pnLoyaltyCode;
@@ -54,21 +50,37 @@ public class MainWindow extends JFrame {
 	private JPanel panel_6;
 	private JPanel panel_8;
 	private JPanel panel_9;
-	private JLabel lblNewLabel;
-	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel_2;
 	private JPanel panel_7;
-	private JTextField textField;
-	private JButton btnNewButton;
 	private JPanel panel_10;
 	private JPanel panel_11;
 	private JPanel panel_14;
 	private JPanel panel_12;
-	private JButton btnNewButton_1;
 	private JPanel panel_13;
 	private JPanel panel_15;
 	private JPanel panel_16;
 
+	//LABELS
+	private JLabel lblTitle;
+	private JLabel lblContinue;
+	private JLabel lblChangeSize;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+	private JLabel lblNewLabel_2;
+	
+	//TEXTFIELDS
+	private JTextField textField;
+	
+	//BUTTONS
+	private JButton btnNewButton;
+	private JButton btnNewButton_1;
+	private JButton btnHelp;
+	private JButton btnContinue;
+	
+	//SLIDERS
+	private JSlider slResize;
+
+	
+	
 	/**
 	 * Create the frame.
 	 */
