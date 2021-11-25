@@ -1,25 +1,22 @@
 package gui;
 
 import java.awt.BorderLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JMenuBar;
-import javax.swing.JButton;
-import java.awt.GridLayout;
-import java.awt.Font;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JToggleButton;
-import java.awt.FlowLayout;
-import java.awt.Color;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
-import java.awt.Toolkit;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class MainWindow extends JFrame {
 
@@ -84,11 +81,11 @@ public class MainWindow extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new CardLayout(0, 0));
-		contentPane.add(getPnMainWindow(), "name_121053900873500");
-		contentPane.add(getPnLoyaltyCode(), "name_121059880814900");
-		contentPane.add(getPnGiftsBoard(), "name_121077964756500");
-		contentPane.add(getPnSelectYourGifts(), "name_121101231334000");
-		contentPane.add(getPnTravelSelect(), "name_121124218713600");
+		contentPane.add(getPnMainWindow(), "pn1");
+		contentPane.add(getPnLoyaltyCode(), "pn2");
+		contentPane.add(getPnGiftsBoard(), "pn3");
+		contentPane.add(getPnSelectYourGifts(), "pn4");
+		contentPane.add(getPnTravelSelect(), "pn5");
 	}
 
 	private JPanel getPnMainContent() {
