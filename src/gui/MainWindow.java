@@ -3,14 +3,22 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
+import java.awt.image.BufferedImage;
+import java.awt.Image;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -21,16 +29,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import logic.Clients;
+import logic.Game;
 import logic.Gift;
 import logic.Gifts;
+import logic.Main;
 import logic.Person;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = 418969130762685793L;
@@ -109,7 +121,7 @@ public class MainWindow extends JFrame {
 
 	private JLabel lblTitle3;
 	private JPanel pnEast;
-	private JButton btnNewButton;
+	private JButton btnContinue3;
 	private JButton btnNewButton_1;
 	private JPanel panel_20;
 	private JButton btnHelp3;
@@ -125,8 +137,8 @@ public class MainWindow extends JFrame {
 	private JPanel panel_23;
 	private JScrollPane scrollPane;
 	private JList list;
-	private JLabel lblNewLabel;
-	private JButton btnNewButton_2;
+	private JLabel lblImage;
+	private JButton btnContinue4;
 	private JPanel panel_24;
 	private JPanel panel_25;
 	private JLabel lblNewLabel_1;
@@ -140,23 +152,29 @@ public class MainWindow extends JFrame {
 	private JLabel lblPointsCount;
 	private JLabel lblNewLabel_5;
 	private JComboBox cbGifts;
-	private JButton btnNewButton_3;
-	private JButton btnNewButton_4;
+	private JButton btnAdd4;
+	private JButton btnRemove4;
 	private JLabel lblNewLabel_6;
 
 	// LOGIC CLASSES
 	private Clients cli = new Clients();
 	private Gifts gf = new Gifts();
-	private Integer remainingPoints = 0;
-	@SuppressWarnings("rawtypes")
+	private Game game = new Game(0, 3);
 	private DefaultComboBoxModel dcbgiftm = new DefaultComboBoxModel();
+	private DefaultListModel dlmGifts = new DefaultListModel();
+	private MyButtonListener mbl = new MyButtonListener();
+	private JPanel panel_28;
+	private JPanel pnNorth4;
+	private JPanel pnSouth4;
+	private JPanel pnWest4;
+	private JPanel pnEast4;
 
 	/**
 	 * Create the frame.
 	 */
 	public MainWindow() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class
-				.getResource("/img/2-2-gift-free-download-png.png")));
+		setIconImage(Toolkit.getDefaultToolkit()
+				.getImage(MainWindow.class.getResource("/img/gift.png")));
 		setTitle("Welcome : Gifts Panel");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1063, 668);
@@ -171,6 +189,10 @@ public class MainWindow extends JFrame {
 		contentPane.add(getPnGiftsBoard(), "pn3");
 		contentPane.add(getPnSelectYourGifts(), "pn4");
 		contentPane.add(getPnTravelSelect(), "pn5");
+	}
+
+	private void reinitializate() {
+		Main.main(null);
 	}
 
 	private JPanel getPnMainContent() {
@@ -212,9 +234,12 @@ public class MainWindow extends JFrame {
 	private JButton getBtnContinue() {
 		if (btnContinue == null) {
 			btnContinue = new JButton("CONTINUE \u2500\u25BA");
+			btnContinue.setToolTipText("Start the game, win some prizes!");
 			btnContinue.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					crd.next(getContentPane());
+					getTxtCode().grabFocus();
+					setTitle("Loyalty Code : Gifts Panel");
 				}
 			});
 			btnContinue.setForeground(new Color(255, 255, 255));
@@ -264,6 +289,8 @@ public class MainWindow extends JFrame {
 	private JButton getBtnHelp() {
 		if (btnHelp == null) {
 			btnHelp = new JButton("HELP");
+			btnHelp.setToolTipText("Get some help to start in the app");
+			btnHelp.setMnemonic('H');
 			btnHelp.setBackground(new Color(255, 255, 0));
 			btnHelp.setFont(new Font("Tahoma", Font.BOLD, 18));
 		}
@@ -337,6 +364,8 @@ public class MainWindow extends JFrame {
 	private JSlider getSlResize() {
 		if (slResize == null) {
 			slResize = new JSlider();
+			slResize.setToolTipText(
+					"Move the slider and set the size of the texts in the screen to the ones you want");
 			slResize.setMaximum(68);
 			slResize.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
@@ -532,6 +561,7 @@ public class MainWindow extends JFrame {
 	private JTextField getTxtCode() {
 		if (txtCode == null) {
 			txtCode = new JTextField();
+			txtCode.setText("MFL137");
 			txtCode.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			txtCode.setColumns(10);
 		}
@@ -541,11 +571,13 @@ public class MainWindow extends JFrame {
 	private JButton getBtnContinue2() {
 		if (btnContinue2 == null) {
 			btnContinue2 = new JButton("CONTINUE");
+			btnContinue2.setBackground(Color.GREEN);
 			btnContinue2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			btnContinue2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (checkCode(getTxtCode().getText())) {
 						crd.next(getContentPane());
+						setTitle("Board : Gifts Panel");
 					} else {
 						JOptionPane.showMessageDialog(rootPane,
 								"Your Client ID is not in the Data Base or is "
@@ -605,6 +637,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnBack2() {
 		if (btnBack2 == null) {
 			btnBack2 = new JButton("BACK");
+			btnBack2.setBackground(Color.RED);
 			btnBack2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			btnBack2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -635,6 +668,7 @@ public class MainWindow extends JFrame {
 	private JPanel getPanel_16() {
 		if (panel_16 == null) {
 			panel_16 = new JPanel();
+			panel_16.setLayout(new GridLayout(1, 0, 0, 0));
 		}
 		return panel_16;
 	}
@@ -796,29 +830,48 @@ public class MainWindow extends JFrame {
 		if (pnEast == null) {
 			pnEast = new JPanel();
 			pnEast.setLayout(new GridLayout(2, 2, 0, 0));
-			pnEast.add(getBtnNewButton());
+			pnEast.add(getBtnContinue3());
 			pnEast.add(getBtnNewButton_1());
 		}
 		return pnEast;
 	}
 
-	private JButton getBtnNewButton() {
-		if (btnNewButton == null) {
-			btnNewButton = new JButton("CONTINUE");
-			btnNewButton.addActionListener(new ActionListener() {
+	private JButton getBtnContinue3() {
+		if (btnContinue3 == null) {
+			btnContinue3 = new JButton("CONTINUE");
+			btnContinue3.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					crd.next(getContentPane());
+					if (game.getRemainingPoints() == 0) {
+						JOptionPane.showMessageDialog(rootPane, "You didn't get"
+								+ " any points, hope you have better luck next "
+								+ "time! The app will reset");
+						close();
+						reinitializate();
+					} else {
+						crd.next(getContentPane());
+						setTitle("Redeem your Gifts : Gifts Panel");
+					}
 				}
 			});
-			btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 20));
-			btnNewButton.setBackground(Color.GREEN);
+			btnContinue3.setFont(new Font("Tahoma", Font.BOLD, 20));
+			btnContinue3.setBackground(Color.GREEN);
+			btnContinue3.setEnabled(false);
 		}
-		return btnNewButton;
+		return btnContinue3;
+	}
+
+	private void close() {
+		setVisible(false);
 	}
 
 	private JButton getBtnNewButton_1() {
 		if (btnNewButton_1 == null) {
 			btnNewButton_1 = new JButton("BACK");
+			btnNewButton_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					crd.previous(getContentPane());
+				}
+			});
 			btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			btnNewButton_1.setBackground(Color.RED);
 		}
@@ -853,12 +906,18 @@ public class MainWindow extends JFrame {
 
 	private void createButtons() {
 		Random r = new Random();
-		Integer[] possibleValues = { 1000, 250, 50 };
 
+		// Posible Prizes
+		Integer[] possibleValues = { 1000, 250, 50, -1, -2 };
+
+		// Counter for remaining prizes to add to the board
 		Integer remain1000 = 1;
 		Integer remain250 = 5;
 		Integer remain50 = 8;
+		Integer remainDouble = 1;
+		Integer remainSpecial = 2;
 
+		// Adding the prizes to the board
 		for (int i = 1; i < 26; i++) {
 			Integer pos = r.nextInt(possibleValues.length);
 			if (pos == 0 && remain1000 > 0) {
@@ -870,6 +929,12 @@ public class MainWindow extends JFrame {
 			} else if (pos == 2 && remain50 > 0) {
 				pnBoxes.add(createButton(i, possibleValues[2]));
 				remain50--;
+			} else if (pos == 3 && remainDouble > 0) {
+				pnBoxes.add(createButton(i, possibleValues[3]));
+				remainDouble--;
+			} else if (pos == 4 && remainSpecial > 0) {
+				pnBoxes.add(createButton(i, possibleValues[4]));
+				remainSpecial--;
 			} else {
 				pnBoxes.add(createButton(i, 0));
 			}
@@ -880,21 +945,33 @@ public class MainWindow extends JFrame {
 		JButton box;
 		box = new JButton(String.valueOf(i));
 		box.setActionCommand(String.valueOf(value));
-		box.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				addPoints(Integer.valueOf(box.getActionCommand()));
-			}
-		});
-		box.setText(box.getActionCommand());
+		box.addActionListener(mbl);
+
+		// Print the prize on each button of the board
+		System.out.println(i + ": " + box.getActionCommand());
+
 		box.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		return box;
 	}
 
-	private void addPoints(Integer valueOf) {
-		this.remainingPoints += valueOf;
-		getLblPointsCount().setText(String.valueOf(this.remainingPoints));
+	class MyButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (game.getRemainingTrys() > 0) {
+				game.addPoints(Integer.valueOf(e.getActionCommand()));
+				((JButton) e.getSource()).setEnabled(false);
+				getLblPointsCount()
+						.setText(String.valueOf(game.getRemainingPoints()));
+			}
+			if (game.getRemainingTrys() == 0) {
+				for (Component c : getPnBoxes().getComponents()) {
+					c.setEnabled(false);
+				}
+				getBtnContinue3().setEnabled(true);
+			}
+		}
 	}
-	
+
 	private JPanel getPnNorth_1() {
 		if (pnNorth_1 == null) {
 			pnNorth_1 = new JPanel();
@@ -974,8 +1051,8 @@ public class MainWindow extends JFrame {
 			panel_23 = new JPanel();
 			panel_23.setLayout(new GridLayout(0, 3, 0, 0));
 			panel_23.add(getScrollPane());
-			panel_23.add(getLblNewLabel());
-			panel_23.add(getBtnNewButton_2());
+			panel_23.add(getPanel_28());
+			panel_23.add(getBtnContinue4());
 		}
 		return panel_23;
 	}
@@ -992,27 +1069,29 @@ public class MainWindow extends JFrame {
 	private JList getList() {
 		if (list == null) {
 			list = new JList();
+			list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			list.setModel(dlmGifts);
 		}
 		return list;
 	}
 
-	private JLabel getLblNewLabel() {
-		if (lblNewLabel == null) {
-			lblNewLabel = new JLabel("");
+	private JLabel getLblImage() {
+		if (lblImage == null) {
+			lblImage = new JLabel("");
 		}
-		return lblNewLabel;
+		return lblImage;
 	}
 
-	private JButton getBtnNewButton_2() {
-		if (btnNewButton_2 == null) {
-			btnNewButton_2 = new JButton("CONTINUE");
-			btnNewButton_2.addActionListener(new ActionListener() {
+	private JButton getBtnContinue4() {
+		if (btnContinue4 == null) {
+			btnContinue4 = new JButton("CONTINUE");
+			btnContinue4.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+
 				}
 			});
 		}
-		return btnNewButton_2;
+		return btnContinue4;
 	}
 
 	private JPanel getPanel_24() {
@@ -1032,8 +1111,8 @@ public class MainWindow extends JFrame {
 			panel_25 = new JPanel();
 			panel_25.add(getLblNewLabel_5());
 			panel_25.add(getCbGifts());
-			panel_25.add(getBtnNewButton_3());
-			panel_25.add(getBtnNewButton_4());
+			panel_25.add(getBtnAdd4());
+			panel_25.add(getBtnRemove4());
 		}
 		return panel_25;
 	}
@@ -1048,7 +1127,79 @@ public class MainWindow extends JFrame {
 	private JComboBox getCbCategory() {
 		if (cbCategory == null) {
 			cbCategory = new JComboBox();
-			cbCategory.setModel(new DefaultComboBoxModel(new String[] { "All" }));
+			cbCategory.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					switch ((String) getCbCategory().getSelectedItem()) {
+					case "All":
+						dcbgiftm = new DefaultComboBoxModel();
+						dcbgiftm.addElement("Select A Gift...");
+						for (Gift g : gf.getGifts()) {
+							dcbgiftm.addElement(g);
+						}
+						getCbGifts().setModel(dcbgiftm);
+						getBtnAdd4().setEnabled(false);
+						break;
+					case "Food":
+						dcbgiftm = new DefaultComboBoxModel();
+						dcbgiftm.addElement("Select A Gift...");
+						for (Gift g : gf.getGifts()) {
+							if (g.getSection().equals("F")) {
+								dcbgiftm.addElement(g);
+							}
+						}
+						getCbGifts().setModel(dcbgiftm);
+						getBtnAdd4().setEnabled(false);
+						break;
+					case "Sports":
+						dcbgiftm = new DefaultComboBoxModel();
+						dcbgiftm.addElement("Select A Gift...");
+						for (Gift g : gf.getGifts()) {
+							if (g.getSection().equals("S")) {
+								dcbgiftm.addElement(g);
+							}
+						}
+						getCbGifts().setModel(dcbgiftm);
+						getBtnAdd4().setEnabled(false);
+						break;
+					case "Electronics":
+						dcbgiftm = new DefaultComboBoxModel();
+						dcbgiftm.addElement("Select A Gift...");
+						for (Gift g : gf.getGifts()) {
+							if (g.getSection().equals("E")) {
+								dcbgiftm.addElement(g);
+							}
+						}
+						getCbGifts().setModel(dcbgiftm);
+						getBtnAdd4().setEnabled(false);
+						break;
+					case "Toys":
+						dcbgiftm = new DefaultComboBoxModel();
+						dcbgiftm.addElement("Select A Gift...");
+						for (Gift g : gf.getGifts()) {
+							if (g.getSection().equals("T")) {
+								dcbgiftm.addElement(g);
+							}
+						}
+						getCbGifts().setModel(dcbgiftm);
+						getBtnAdd4().setEnabled(false);
+						break;
+					case "Travel and Experiences":
+						dcbgiftm = new DefaultComboBoxModel();
+						dcbgiftm.addElement("Select A Gift...");
+						for (Gift g : gf.getGifts()) {
+							if (g.getSection().equals("V")) {
+								dcbgiftm.addElement(g);
+							}
+						}
+						getCbGifts().setModel(dcbgiftm);
+						getBtnAdd4().setEnabled(false);
+						break;
+					}
+				}
+			});
+			cbCategory.setModel(new DefaultComboBoxModel(
+					new String[] { "All", "Food", "Sports", "Electronics",
+							"Toys", "Travel and Experiences" }));
 		}
 		return cbCategory;
 	}
@@ -1063,8 +1214,8 @@ public class MainWindow extends JFrame {
 	private JComboBox getCbOrder() {
 		if (cbOrder == null) {
 			cbOrder = new JComboBox();
-			cbOrder.setModel(
-					new DefaultComboBoxModel(new String[] { "Ordered by..." }));
+			cbOrder.setModel(new DefaultComboBoxModel(
+					new String[] { "Ordered by...", "Points" }));
 		}
 		return cbOrder;
 	}
@@ -1106,7 +1257,8 @@ public class MainWindow extends JFrame {
 
 	private JLabel getLblPointsCount() {
 		if (lblPointsCount == null) {
-			lblPointsCount = new JLabel(String.valueOf(remainingPoints));
+			lblPointsCount = new JLabel(
+					String.valueOf(game.getRemainingPoints()));
 		}
 		return lblPointsCount;
 	}
@@ -1118,30 +1270,89 @@ public class MainWindow extends JFrame {
 		return lblNewLabel_5;
 	}
 
+	private void adaptImage(JLabel label, String imagePath) {
+		ImageIcon tmpImagen = new ImageIcon(getClass().getResource(imagePath));
+		float delta = ((label.getWidth() * 100) / tmpImagen.getIconWidth())
+				/ 100f;
+		if (tmpImagen.getIconHeight() > label.getHeight())
+			delta = ((label.getHeight() * 100) / tmpImagen.getIconHeight())
+					/ 100f;
+		int ancho = (int) (tmpImagen.getIconWidth() * delta);
+		int alto = (int) (tmpImagen.getIconHeight() * delta);
+		label.setIcon(new ImageIcon(tmpImagen.getImage()
+				.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH)));
+	}
+
 	private JComboBox getCbGifts() {
 		if (cbGifts == null) {
 			cbGifts = new JComboBox();
+			cbGifts.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (getCbGifts().getSelectedItem()
+							.equals("Select A Gift...")) {
+						getBtnAdd4().setEnabled(false);
+						adaptImage(getLblImage(), "/img/gift.png");
+					} else {
+						getBtnAdd4().setEnabled(true);
+						String code = ((Gift) getCbGifts().getSelectedItem())
+								.getCode();
+						adaptImage(getLblImage(), "/img/" + code + ".png");
+					}
+				}
+			});
 			this.dcbgiftm.addElement("Select A Gift...");
 			for (Gift g : gf.getGifts()) {
-				dcbgiftm.addElement(g.getName());
+				dcbgiftm.addElement(g);
 			}
 			cbGifts.setModel(dcbgiftm);
 		}
 		return cbGifts;
 	}
 
-	private JButton getBtnNewButton_3() {
-		if (btnNewButton_3 == null) {
-			btnNewButton_3 = new JButton("ADD");
+	private JButton getBtnAdd4() {
+		if (btnAdd4 == null) {
+			btnAdd4 = new JButton("ADD");
+			btnAdd4.setEnabled(false);
+			btnAdd4.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Gift g = (Gift) getCbGifts().getSelectedItem();
+
+					if (game.getRemainingPoints() - g.getPoints() >= 0) {
+						dlmGifts.addElement(g);
+						game.setRemainingPoints(
+								game.getRemainingPoints() - g.getPoints());
+						getLblPointsCount().setText(
+								String.valueOf(game.getRemainingPoints()));
+					} else {
+						JOptionPane.showMessageDialog(rootPane, "You don't have"
+								+ " enought points to claim this item");
+					}
+				}
+			});
 		}
-		return btnNewButton_3;
+		return btnAdd4;
 	}
 
-	private JButton getBtnNewButton_4() {
-		if (btnNewButton_4 == null) {
-			btnNewButton_4 = new JButton("REMOVE");
+	private JButton getBtnRemove4() {
+		if (btnRemove4 == null) {
+			btnRemove4 = new JButton("REMOVE");
+			btnRemove4.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (getList().getSelectedValue() != null) {
+						Gift g = (Gift) getList().getSelectedValue();
+						dlmGifts.remove(getList().getSelectedIndex());
+						game.setRemainingPoints(
+								game.getRemainingPoints() + g.getPoints());
+						getLblPointsCount().setText(
+								String.valueOf(game.getRemainingPoints()));
+					} else {
+						JOptionPane.showMessageDialog(rootPane, "Please select "
+								+ "an item from the list to remove it");
+					}
+				}
+			});
 		}
-		return btnNewButton_4;
+		return btnRemove4;
 	}
 
 	private JLabel getLblNewLabel_6() {
@@ -1149,5 +1360,46 @@ public class MainWindow extends JFrame {
 			lblNewLabel_6 = new JLabel("Redeemed gifts:");
 		}
 		return lblNewLabel_6;
+	}
+
+	private JPanel getPanel_28() {
+		if (panel_28 == null) {
+			panel_28 = new JPanel();
+			panel_28.setLayout(new BorderLayout(0, 0));
+			panel_28.add(getLblImage());
+			panel_28.add(getPnNorth4(), BorderLayout.NORTH);
+			panel_28.add(getPnSouth4(), BorderLayout.SOUTH);
+			panel_28.add(getPnWest4(), BorderLayout.WEST);
+			panel_28.add(getPnEast4(), BorderLayout.EAST);
+		}
+		return panel_28;
+	}
+
+	private JPanel getPnNorth4() {
+		if (pnNorth4 == null) {
+			pnNorth4 = new JPanel();
+		}
+		return pnNorth4;
+	}
+
+	private JPanel getPnSouth4() {
+		if (pnSouth4 == null) {
+			pnSouth4 = new JPanel();
+		}
+		return pnSouth4;
+	}
+
+	private JPanel getPnWest4() {
+		if (pnWest4 == null) {
+			pnWest4 = new JPanel();
+		}
+		return pnWest4;
+	}
+
+	private JPanel getPnEast4() {
+		if (pnEast4 == null) {
+			pnEast4 = new JPanel();
+		}
+		return pnEast4;
 	}
 }

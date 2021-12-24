@@ -94,4 +94,8 @@ public class Gift {
 	public void setPoints(Integer points) {
 		this.points = points;
 	}
+	
+	public String toString() {
+		return getName() + " - " + getPoints();
+	}
 }
