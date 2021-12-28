@@ -1,7 +1,10 @@
-package logic;
+package logic.util;
 
 import java.io.*;
 import java.util.*;
+
+import logic.Gift;
+import logic.Person;
 
 public abstract class FileUtil {
 

@@ -1,4 +1,4 @@
-package logic;
+package logic.util;
 
 import javax.swing.ImageIcon;
 

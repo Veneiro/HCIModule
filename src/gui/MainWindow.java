@@ -6,16 +6,17 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.Year;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
-import java.awt.image.BufferedImage;
-import java.awt.Image;
 
-import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -29,11 +30,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import com.toedter.calendar.JCalendar;
 
 import logic.Clients;
 import logic.Game;
@@ -41,6 +45,10 @@ import logic.Gift;
 import logic.Gifts;
 import logic.Main;
 import logic.Person;
+import logic.Travel;
+import logic.Travels;
+import logic.comparators.ByPointsComparator;
+import logic.comparators.BySecctionComparator;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class MainWindow extends JFrame {
@@ -136,7 +144,7 @@ public class MainWindow extends JFrame {
 	private JPanel panel_22;
 	private JPanel panel_23;
 	private JScrollPane scrollPane;
-	private JList list;
+	private JList RedeemedGiftList;
 	private JLabel lblImage;
 	private JButton btnContinue4;
 	private JPanel panel_24;
@@ -160,14 +168,29 @@ public class MainWindow extends JFrame {
 	private Clients cli = new Clients();
 	private Gifts gf = new Gifts();
 	private Game game = new Game(0, 3);
+	private Travels travels = new Travels();
 	private DefaultComboBoxModel dcbgiftm = new DefaultComboBoxModel();
 	private DefaultListModel dlmGifts = new DefaultListModel();
 	private MyButtonListener mbl = new MyButtonListener();
+	private LocalDateTime ldt = LocalDateTime.now();
+	private DefaultComboBoxModel<Travel> dcbTravelmodel = 
+			new DefaultComboBoxModel<Travel>();
+
 	private JPanel panel_28;
 	private JPanel pnNorth4;
 	private JPanel pnSouth4;
 	private JPanel pnWest4;
 	private JPanel pnEast4;
+	private JPanel pnFinish;
+	private JLabel lblTitle6;
+	private JLabel lblNewLabel;
+	private JButton btnExit6;
+	private JCalendar travelCalendar;
+	private JPanel pnNorth5;
+	private JLabel lblTitle5;
+	private JPanel pnCbTravels;
+	private JComboBox cbRedeemedTravels;
+	private JLabel lblSelectTravel;
 
 	/**
 	 * Create the frame.
@@ -189,6 +212,7 @@ public class MainWindow extends JFrame {
 		contentPane.add(getPnGiftsBoard(), "pn3");
 		contentPane.add(getPnSelectYourGifts(), "pn4");
 		contentPane.add(getPnTravelSelect(), "pn5");
+		contentPane.add(getPnFinish(), "pn6");
 	}
 
 	private void reinitializate() {
@@ -443,8 +467,18 @@ public class MainWindow extends JFrame {
 	private JPanel getPnTravelSelect() {
 		if (pnTravelSelect == null) {
 			pnTravelSelect = new JPanel();
+			pnTravelSelect.setLayout(new BorderLayout(0, 0));
+			pnTravelSelect.add(getTravelCalendar());
+			pnTravelSelect.add(getPnNorth5(), BorderLayout.NORTH);
 		}
 		return pnTravelSelect;
+	}
+	
+	private JCalendar getTravelCalendar() {
+		if(travelCalendar == null) {
+			travelCalendar = new JCalendar();
+		}
+		return travelCalendar;
 	}
 
 	private JPanel getPanel_1() {
@@ -849,6 +883,7 @@ public class MainWindow extends JFrame {
 						reinitializate();
 					} else {
 						crd.next(getContentPane());
+						adaptImage(getLblImage(), "/img/gift.png");
 						setTitle("Redeem your Gifts : Gifts Panel");
 					}
 				}
@@ -1060,19 +1095,20 @@ public class MainWindow extends JFrame {
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setViewportView(getList());
+			scrollPane.setViewportView(getRedeemedGiftList());
 			scrollPane.setColumnHeaderView(getLblNewLabel_6());
 		}
 		return scrollPane;
 	}
 
-	private JList getList() {
-		if (list == null) {
-			list = new JList();
-			list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			list.setModel(dlmGifts);
+	private JList getRedeemedGiftList() {
+		if (RedeemedGiftList == null) {
+			RedeemedGiftList = new JList();
+			RedeemedGiftList
+					.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			RedeemedGiftList.setModel(dlmGifts);
 		}
-		return list;
+		return RedeemedGiftList;
 	}
 
 	private JLabel getLblImage() {
@@ -1085,9 +1121,27 @@ public class MainWindow extends JFrame {
 	private JButton getBtnContinue4() {
 		if (btnContinue4 == null) {
 			btnContinue4 = new JButton("CONTINUE");
+			btnContinue4.setBackground(Color.GREEN);
 			btnContinue4.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					ListModel<Gift> d = getRedeemedGiftList().getModel();
+					for (int i = 0; i < d.getSize(); i++) {
+						if (d.getElementAt(i).getSection().equals("V")) {
+							Travel t = new Travel(d.getElementAt(i).getName(),
+									ldt.getDayOfMonth(), ldt.getMonthValue(),
+									Year.MIN_VALUE + ldt.getYear());
+							travels.add(t);
+						}
+					}
+					if (travels.getTravels().size() == 0) {
+						crd.show(getContentPane(), "pn6");
+					} else {
+						for (Travel t : travels.getTravels()) {
+							dcbTravelmodel.addElement(t);
+						}
+						cbRedeemedTravels.setModel(dcbTravelmodel);
+						crd.show(getContentPane(), "pn5");
+					}
 				}
 			});
 		}
@@ -1129,6 +1183,7 @@ public class MainWindow extends JFrame {
 			cbCategory = new JComboBox();
 			cbCategory.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					getCbOrder().setSelectedIndex(0);
 					switch ((String) getCbCategory().getSelectedItem()) {
 					case "All":
 						dcbgiftm = new DefaultComboBoxModel();
@@ -1214,8 +1269,40 @@ public class MainWindow extends JFrame {
 	private JComboBox getCbOrder() {
 		if (cbOrder == null) {
 			cbOrder = new JComboBox();
+			cbOrder.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// Initializate all necessary fields
+					List<Gift> aux = new ArrayList<Gift>();
+					List<Gift> auxStr = new ArrayList<Gift>();
+
+					for (int i = 1; i < dcbgiftm.getSize(); i++) {
+						auxStr.add((Gift) dcbgiftm.getElementAt(i));
+					}
+
+					for (Gift elem : auxStr) {
+						for (Gift gift : gf.getGifts()) {
+							if (gift.getName().equals(elem.getName())) {
+								aux.add(gift);
+							}
+						}
+					}
+
+					// Order cb by Points
+					if (getCbOrder().getSelectedItem() == "Points") {
+						Collections.sort(aux, new ByPointsComparator());
+					} else if (getCbOrder().getSelectedItem() == "Section") {
+						Collections.sort(aux, new BySecctionComparator());
+					}
+					// Change the actual model of the cbs
+					dcbgiftm.removeAllElements();
+					dcbgiftm.addElement("Select A Gift...");
+					for (Gift gift : aux) {
+						dcbgiftm.addElement(gift);
+					}
+				}
+			});
 			cbOrder.setModel(new DefaultComboBoxModel(
-					new String[] { "Ordered by...", "Points" }));
+					new String[] { "Ordered by...", "Points", "Section" }));
 		}
 		return cbOrder;
 	}
@@ -1288,15 +1375,20 @@ public class MainWindow extends JFrame {
 			cbGifts = new JComboBox();
 			cbGifts.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (getCbGifts().getSelectedItem()
-							.equals("Select A Gift...")) {
+					try {
+						if (!getCbGifts().getSelectedItem()
+								.equals("Select A Gift...")) {
+							getBtnAdd4().setEnabled(true);
+							String code = ((Gift) getCbGifts()
+									.getSelectedItem()).getCode();
+							adaptImage(getLblImage(), "/img/" + code + ".png");
+						} else {
+							getBtnAdd4().setEnabled(false);
+							adaptImage(getLblImage(), "/img/gift.png");
+						}
+					} catch (NullPointerException exception) {
 						getBtnAdd4().setEnabled(false);
 						adaptImage(getLblImage(), "/img/gift.png");
-					} else {
-						getBtnAdd4().setEnabled(true);
-						String code = ((Gift) getCbGifts().getSelectedItem())
-								.getCode();
-						adaptImage(getLblImage(), "/img/" + code + ".png");
 					}
 				}
 			});
@@ -1338,9 +1430,11 @@ public class MainWindow extends JFrame {
 			btnRemove4 = new JButton("REMOVE");
 			btnRemove4.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (getList().getSelectedValue() != null) {
-						Gift g = (Gift) getList().getSelectedValue();
-						dlmGifts.remove(getList().getSelectedIndex());
+					if (getRedeemedGiftList().getSelectedValue() != null) {
+						Gift g = (Gift) getRedeemedGiftList()
+								.getSelectedValue();
+						dlmGifts.remove(
+								getRedeemedGiftList().getSelectedIndex());
 						game.setRemainingPoints(
 								game.getRemainingPoints() + g.getPoints());
 						getLblPointsCount().setText(
@@ -1401,5 +1495,88 @@ public class MainWindow extends JFrame {
 			pnEast4 = new JPanel();
 		}
 		return pnEast4;
+	}
+
+	private JPanel getPnFinish() {
+		if (pnFinish == null) {
+			pnFinish = new JPanel();
+			pnFinish.setLayout(new BorderLayout(0, 0));
+			pnFinish.add(getLblTitle6(), BorderLayout.NORTH);
+			pnFinish.add(getLblNewLabel(), BorderLayout.CENTER);
+			pnFinish.add(getBtnExit6(), BorderLayout.SOUTH);
+		}
+		return pnFinish;
+	}
+
+	private JLabel getLblTitle6() {
+		if (lblTitle6 == null) {
+			lblTitle6 = new JLabel("ENJOY YOUR GIFTS!!");
+			lblTitle6.setHorizontalAlignment(SwingConstants.CENTER);
+			lblTitle6.setFont(new Font("Tahoma", Font.BOLD, 45));
+		}
+		return lblTitle6;
+	}
+
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel(
+					"You can get your gifts on the stand next to the terminal");
+			lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblNewLabel;
+	}
+
+	private JButton getBtnExit6() {
+		if (btnExit6 == null) {
+			btnExit6 = new JButton("EXIT");
+			btnExit6.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					close();
+					reinitializate();
+				}
+			});
+			btnExit6.setBackground(Color.GREEN);
+			btnExit6.setFont(new Font("Tahoma", Font.BOLD, 26));
+		}
+		return btnExit6;
+	}
+	private JPanel getPnNorth5() {
+		if (pnNorth5 == null) {
+			pnNorth5 = new JPanel();
+			pnNorth5.setLayout(new GridLayout(2, 0, 0, 0));
+			pnNorth5.add(getLblTitle5());
+			pnNorth5.add(getPnCbTravels());
+		}
+		return pnNorth5;
+	}
+	private JLabel getLblTitle5() {
+		if (lblTitle5 == null) {
+			lblTitle5 = new JLabel("Select the Date for your Trips");
+			lblTitle5.setHorizontalAlignment(SwingConstants.CENTER);
+			lblTitle5.setFont(new Font("Tahoma", Font.BOLD, 20));
+		}
+		return lblTitle5;
+	}
+	private JPanel getPnCbTravels() {
+		if (pnCbTravels == null) {
+			pnCbTravels = new JPanel();
+			pnCbTravels.add(getLblSelectTravel());
+			pnCbTravels.add(getCbRedeemedTravels());
+		}
+		return pnCbTravels;
+	}
+	private JComboBox getCbRedeemedTravels() {
+		if (cbRedeemedTravels == null) {
+			cbRedeemedTravels = new JComboBox();
+		}
+		return cbRedeemedTravels;
+	}
+	private JLabel getLblSelectTravel() {
+		if (lblSelectTravel == null) {
+			lblSelectTravel = new JLabel("Redeemed Travels: ");
+			lblSelectTravel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		}
+		return lblSelectTravel;
 	}
 }

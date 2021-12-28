@@ -3,6 +3,8 @@ package logic;
 import java.util.ArrayList;
 import java.util.List;
 
+import logic.util.FileUtil;
+
 public class Clients {
 
 	private List<Person> clients = new ArrayList<Person>();
