@@ -49,6 +49,7 @@ import logic.Travel;
 import logic.Travels;
 import logic.comparators.ByPointsComparator;
 import logic.comparators.BySecctionComparator;
+import java.awt.FlowLayout;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class MainWindow extends JFrame {
@@ -173,8 +174,7 @@ public class MainWindow extends JFrame {
 	private DefaultListModel dlmGifts = new DefaultListModel();
 	private MyButtonListener mbl = new MyButtonListener();
 	private LocalDateTime ldt = LocalDateTime.now();
-	private DefaultComboBoxModel<Travel> dcbTravelmodel = 
-			new DefaultComboBoxModel<Travel>();
+	private DefaultComboBoxModel<Travel> dcbTravelmodel = new DefaultComboBoxModel<Travel>();
 
 	private JPanel panel_28;
 	private JPanel pnNorth4;
@@ -191,6 +191,11 @@ public class MainWindow extends JFrame {
 	private JPanel pnCbTravels;
 	private JComboBox cbRedeemedTravels;
 	private JLabel lblSelectTravel;
+	private JPanel pnCalendar;
+	private JPanel panel_30;
+	private JButton btnBack5;
+	private JButton btnContinue5;
+	private JButton btnAssignDate5;
 
 	/**
 	 * Create the frame.
@@ -468,14 +473,15 @@ public class MainWindow extends JFrame {
 		if (pnTravelSelect == null) {
 			pnTravelSelect = new JPanel();
 			pnTravelSelect.setLayout(new BorderLayout(0, 0));
-			pnTravelSelect.add(getTravelCalendar());
 			pnTravelSelect.add(getPnNorth5(), BorderLayout.NORTH);
+			pnTravelSelect.add(getPnCalendar(), BorderLayout.CENTER);
+			pnTravelSelect.add(getPanel_30(), BorderLayout.SOUTH);
 		}
 		return pnTravelSelect;
 	}
-	
+
 	private JCalendar getTravelCalendar() {
-		if(travelCalendar == null) {
+		if (travelCalendar == null) {
 			travelCalendar = new JCalendar();
 		}
 		return travelCalendar;
@@ -1124,23 +1130,32 @@ public class MainWindow extends JFrame {
 			btnContinue4.setBackground(Color.GREEN);
 			btnContinue4.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					ListModel<Gift> d = getRedeemedGiftList().getModel();
-					for (int i = 0; i < d.getSize(); i++) {
-						if (d.getElementAt(i).getSection().equals("V")) {
-							Travel t = new Travel(d.getElementAt(i).getName(),
-									ldt.getDayOfMonth(), ldt.getMonthValue(),
-									Year.MIN_VALUE + ldt.getYear());
-							travels.add(t);
+					if (game.getRemainingPoints() > 0) {
+						switch(JOptionPane.showConfirmDialog(rootPane,
+								"You didn't expend all your POINTS, the "
+								+ "remaining points will be lost forever.\n "
+								+ "You really want to continue?")) {
+						case 0:
+							ListModel<Gift> d = getRedeemedGiftList().getModel();
+							for (int i = 0; i < d.getSize(); i++) {
+								if (d.getElementAt(i).getSection().equals("V")) {
+									Travel t = new Travel(d.getElementAt(i).getName(),
+											ldt.getDayOfMonth(), ldt.getMonthValue(),
+											Year.MIN_VALUE + ldt.getYear());
+									travels.add(t);
+								}
+							}
+							if (travels.getTravels().size() == 0) {
+								crd.show(getContentPane(), "pn6");
+							} else {
+								for (Travel t : travels.getTravels()) {
+									dcbTravelmodel.addElement(t);
+								}
+								cbRedeemedTravels.setModel(dcbTravelmodel);
+								crd.show(getContentPane(), "pn5");
+							}
+							break;
 						}
-					}
-					if (travels.getTravels().size() == 0) {
-						crd.show(getContentPane(), "pn6");
-					} else {
-						for (Travel t : travels.getTravels()) {
-							dcbTravelmodel.addElement(t);
-						}
-						cbRedeemedTravels.setModel(dcbTravelmodel);
-						crd.show(getContentPane(), "pn5");
 					}
 				}
 			});
@@ -1541,6 +1556,7 @@ public class MainWindow extends JFrame {
 		}
 		return btnExit6;
 	}
+
 	private JPanel getPnNorth5() {
 		if (pnNorth5 == null) {
 			pnNorth5 = new JPanel();
@@ -1550,6 +1566,7 @@ public class MainWindow extends JFrame {
 		}
 		return pnNorth5;
 	}
+
 	private JLabel getLblTitle5() {
 		if (lblTitle5 == null) {
 			lblTitle5 = new JLabel("Select the Date for your Trips");
@@ -1558,25 +1575,77 @@ public class MainWindow extends JFrame {
 		}
 		return lblTitle5;
 	}
+
 	private JPanel getPnCbTravels() {
 		if (pnCbTravels == null) {
 			pnCbTravels = new JPanel();
 			pnCbTravels.add(getLblSelectTravel());
 			pnCbTravels.add(getCbRedeemedTravels());
+			pnCbTravels.add(getBtnAssignDate5());
 		}
 		return pnCbTravels;
 	}
+
 	private JComboBox getCbRedeemedTravels() {
 		if (cbRedeemedTravels == null) {
 			cbRedeemedTravels = new JComboBox();
 		}
 		return cbRedeemedTravels;
 	}
+
 	private JLabel getLblSelectTravel() {
 		if (lblSelectTravel == null) {
 			lblSelectTravel = new JLabel("Redeemed Travels: ");
 			lblSelectTravel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		}
 		return lblSelectTravel;
+	}
+
+	private JPanel getPnCalendar() {
+		if (pnCalendar == null) {
+			pnCalendar = new JPanel();
+			pnCalendar.setLayout(new GridLayout(0, 1, 0, 0));
+			pnCalendar.add(getTravelCalendar());
+		}
+		return pnCalendar;
+	}
+
+	private JPanel getPanel_30() {
+		if (panel_30 == null) {
+			panel_30 = new JPanel();
+			FlowLayout flowLayout = (FlowLayout) panel_30.getLayout();
+			flowLayout.setAlignment(FlowLayout.TRAILING);
+			flowLayout.setAlignOnBaseline(true);
+			panel_30.add(getBtnBack5());
+			panel_30.add(getBtnContinue5());
+		}
+		return panel_30;
+	}
+
+	private JButton getBtnBack5() {
+		if (btnBack5 == null) {
+			btnBack5 = new JButton("Go Back");
+			btnBack5.setBackground(Color.RED);
+			btnBack5.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		}
+		return btnBack5;
+	}
+
+	private JButton getBtnContinue5() {
+		if (btnContinue5 == null) {
+			btnContinue5 = new JButton("Continue");
+			btnContinue5.setEnabled(false);
+			btnContinue5.setBackground(Color.GREEN);
+			btnContinue5.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		}
+		return btnContinue5;
+	}
+
+	private JButton getBtnAssignDate5() {
+		if (btnAssignDate5 == null) {
+			btnAssignDate5 = new JButton("Assign Date to Selected Travel");
+			btnAssignDate5.setBackground(Color.YELLOW);
+		}
+		return btnAssignDate5;
 	}
 }
