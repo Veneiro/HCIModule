@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+
+<toc version="1.0">
+  
+  <tocitem text="Gift Panel" target="intro"/>
+  <tocitem text="How to Introduce my Code" target="clientcode"/>
+  <tocitem text="How to Play the Game" target="howtoplay"/>
+  <tocitem text="Rewards">
+    <tocitem text="How to select your rewards" target="getyourrewards"/>
+    <tocitem text="Travel Date Selection" target="traveldate"/>
+  </tocitem>
+</toc>

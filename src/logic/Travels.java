@@ -20,6 +20,10 @@ public class Travels {
 	public void add(Travel t) {
 		travels.add(t);
 	}
+	
+	public void remove(Travel t) {
+		travels.remove(t);
+	}
 
 	/**
 	 * @return the travels

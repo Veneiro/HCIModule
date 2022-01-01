@@ -4,12 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.ArrayList;
@@ -17,6 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -49,9 +54,11 @@ import logic.Travel;
 import logic.Travels;
 import logic.comparators.ByPointsComparator;
 import logic.comparators.BySecctionComparator;
-import java.awt.FlowLayout;
+import logic.util.FileUtil;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
+import javax.swing.JTextArea;
+
+@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = 418969130762685793L;
@@ -95,7 +102,9 @@ public class MainWindow extends JFrame {
 	private JPanel panel_17;
 	private JPanel panel_18;
 	private JPanel pnSizeLabel_2;
+	
 	private JLabel lblChangeSize_2;
+	
 	private JPanel pnSizeSlider_2;
 	private JPanel panel_19;
 	private JPanel pnNorth;
@@ -131,16 +140,16 @@ public class MainWindow extends JFrame {
 	private JLabel lblTitle3;
 	private JPanel pnEast;
 	private JButton btnContinue3;
-	private JButton btnNewButton_1;
+	private JButton btnBack3;
 	private JPanel panel_20;
 	private JButton btnHelp3;
 	private JPanel pnBoxes;
 	private JPanel pnNorth_1;
-	private JPanel pnSizeLabel_3_1;
-	private JLabel lblSelectYourGifts;
-	private JPanel pnSizeSlider_3_1;
+	private JPanel pnSizeLabel_4;
+	private JLabel lblSelectYourGifts4;
+	private JPanel pnSizeSlider_4;
 	private JPanel panel_193_1;
-	private JSlider slResize_3_1;
+	private JSlider slResize_4;
 	private JPanel panel_21;
 	private JPanel panel_22;
 	private JPanel panel_23;
@@ -150,20 +159,20 @@ public class MainWindow extends JFrame {
 	private JButton btnContinue4;
 	private JPanel panel_24;
 	private JPanel panel_25;
-	private JLabel lblNewLabel_1;
+	private JLabel lblCategory4;
 	private JComboBox cbCategory;
-	private JLabel lblNewLabel_2;
+	private JLabel lblOrder4;
 	private JComboBox cbOrder;
 	private JTextField txtSearch;
 	private JPanel panel_26;
 	private JPanel panel_27;
-	private JLabel lblRemainingPoints;
+	private JLabel lblRemainingPoints4;
 	private JLabel lblPointsCount;
-	private JLabel lblNewLabel_5;
+	private JLabel lblGifts;
 	private JComboBox cbGifts;
 	private JButton btnAdd4;
 	private JButton btnRemove4;
-	private JLabel lblNewLabel_6;
+	private JLabel lblRedeemedGifts4;
 
 	// LOGIC CLASSES
 	private Clients cli = new Clients();
@@ -175,6 +184,7 @@ public class MainWindow extends JFrame {
 	private MyButtonListener mbl = new MyButtonListener();
 	private LocalDateTime ldt = LocalDateTime.now();
 	private DefaultComboBoxModel<Travel> dcbTravelmodel = new DefaultComboBoxModel<Travel>();
+	private List<Gift> redeemedGifts = new ArrayList<Gift>();
 
 	private JPanel panel_28;
 	private JPanel pnNorth4;
@@ -196,6 +206,9 @@ public class MainWindow extends JFrame {
 	private JButton btnBack5;
 	private JButton btnContinue5;
 	private JButton btnAssignDate5;
+	private JPanel panel_29;
+	private JTextArea txtObservations;
+	private JLabel lblObservations;
 
 	/**
 	 * Create the frame.
@@ -218,11 +231,35 @@ public class MainWindow extends JFrame {
 		contentPane.add(getPnSelectYourGifts(), "pn4");
 		contentPane.add(getPnTravelSelect(), "pn5");
 		contentPane.add(getPnFinish(), "pn6");
+		loadHelp();
 	}
 
 	private void reinitializate() {
 		Main.main(null);
 	}
+	
+	private void loadHelp(){
+
+		   URL hsURL;
+		   HelpSet hs;
+
+		    try {
+			    	File fichero = new File("help/Help.hs");
+			    	hsURL = fichero.toURI().toURL();
+			        hs = new HelpSet(null, hsURL);
+			      }
+
+		    catch (Exception e){
+		      System.out.println("Help not found!");
+		      return;
+		   }
+
+		   HelpBroker hb = hs.createHelpBroker();
+
+		   hb.enableHelpKey(getRootPane(),"intro", hs);
+		   hb.enableHelpOnButton(getBtnHelp3(), "howtoplay", hs);
+		   hb.enableHelpOnButton(getBtnHelp(), "intro", hs);
+		 }
 
 	private JPanel getPnMainContent() {
 		if (pnMainContent == null) {
@@ -860,8 +897,28 @@ public class MainWindow extends JFrame {
 	private JSlider getSlResize_3() {
 		if (slResize_3 == null) {
 			slResize_3 = new JSlider();
+			slResize_3.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					if (slResize_3.getValue() < 2) {
+						getLblTitle3().setFont(new Font("Tahoma", Font.BOLD,
+								20 + slResize_3.getValue()));
+					}
+					if (slResize_3.getValue() < 25) {
+						getBtnContinue3().setFont(new Font("Tahoma", Font.BOLD,
+								20 + slResize_3.getValue()));
+					}
+					if (slResize_3.getValue() < 40) {
+						getBtnBack3().setFont(new Font("Tahoma", Font.PLAIN,
+								18 + slResize_3.getValue()));
+					}
+					if (slResize_3.getValue() < 34) {
+						getBtnHelp3().setFont(new Font("Tahoma", Font.BOLD,
+								20 + slResize_3.getValue()));
+					}
+				}
+			});
 			slResize_3.setValue(0);
-			slResize_3.setMaximum(60);
+			slResize_3.setMaximum(40);
 		}
 		return slResize_3;
 	}
@@ -871,7 +928,7 @@ public class MainWindow extends JFrame {
 			pnEast = new JPanel();
 			pnEast.setLayout(new GridLayout(2, 2, 0, 0));
 			pnEast.add(getBtnContinue3());
-			pnEast.add(getBtnNewButton_1());
+			pnEast.add(getBtnBack3());
 		}
 		return pnEast;
 	}
@@ -905,18 +962,18 @@ public class MainWindow extends JFrame {
 		setVisible(false);
 	}
 
-	private JButton getBtnNewButton_1() {
-		if (btnNewButton_1 == null) {
-			btnNewButton_1 = new JButton("BACK");
-			btnNewButton_1.addActionListener(new ActionListener() {
+	private JButton getBtnBack3() {
+		if (btnBack3 == null) {
+			btnBack3 = new JButton("BACK");
+			btnBack3.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					crd.previous(getContentPane());
 				}
 			});
-			btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			btnNewButton_1.setBackground(Color.RED);
+			btnBack3.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			btnBack3.setBackground(Color.RED);
 		}
-		return btnNewButton_1;
+		return btnBack3;
 	}
 
 	private JPanel getPanel_20() {
@@ -949,7 +1006,7 @@ public class MainWindow extends JFrame {
 		Random r = new Random();
 
 		// Posible Prizes
-		Integer[] possibleValues = { 1000, 250, 50, -1, -2 };
+		Integer[] possibleValues = { 1000, 250, 50, -1, -2, 0 };
 
 		// Counter for remaining prizes to add to the board
 		Integer remain1000 = 1;
@@ -957,27 +1014,137 @@ public class MainWindow extends JFrame {
 		Integer remain50 = 8;
 		Integer remainDouble = 1;
 		Integer remainSpecial = 2;
+		Integer remainNothing = 8;
 
 		// Adding the prizes to the board
 		for (int i = 1; i < 26; i++) {
 			Integer pos = r.nextInt(possibleValues.length);
-			if (pos == 0 && remain1000 > 0) {
-				pnBoxes.add(createButton(i, possibleValues[0]));
-				remain1000--;
-			} else if (pos == 1 && remain250 > 0) {
-				pnBoxes.add(createButton(i, possibleValues[1]));
-				remain250--;
-			} else if (pos == 2 && remain50 > 0) {
-				pnBoxes.add(createButton(i, possibleValues[2]));
-				remain50--;
-			} else if (pos == 3 && remainDouble > 0) {
-				pnBoxes.add(createButton(i, possibleValues[3]));
-				remainDouble--;
-			} else if (pos == 4 && remainSpecial > 0) {
-				pnBoxes.add(createButton(i, possibleValues[4]));
-				remainSpecial--;
-			} else {
-				pnBoxes.add(createButton(i, 0));
+			if (pos == 0) {
+				if (remain1000 > 0) {
+					pnBoxes.add(createButton(i, possibleValues[0]));
+					remain1000--;
+				} else {
+					if (remain250 > 0) {
+						pnBoxes.add(createButton(i, possibleValues[1]));
+						remain250--;
+					} else if (remain50 > 0) {
+						pnBoxes.add(createButton(i, possibleValues[2]));
+						remain50--;
+					} else if (remainDouble > 0) {
+						pnBoxes.add(createButton(i, possibleValues[3]));
+						remainDouble--;
+					} else if (remainSpecial > 0) {
+						pnBoxes.add(createButton(i, possibleValues[4]));
+						remainSpecial--;
+					} else {
+						pnBoxes.add(createButton(i, possibleValues[5]));
+					}
+				}
+			} else if (pos == 1) {
+				if (remain250 > 0) {
+					pnBoxes.add(createButton(i, possibleValues[1]));
+					remain250--;
+				} else {
+					if (remain250 > 0) {
+						pnBoxes.add(createButton(i, possibleValues[1]));
+						remain250--;
+					} else if (remain50 > 0) {
+						pnBoxes.add(createButton(i, possibleValues[2]));
+						remain50--;
+					} else if (remainDouble > 0) {
+						pnBoxes.add(createButton(i, possibleValues[3]));
+						remainDouble--;
+					} else if (remainSpecial > 0) {
+						pnBoxes.add(createButton(i, possibleValues[4]));
+						remainSpecial--;
+					} else {
+						pnBoxes.add(createButton(i, possibleValues[5]));
+					}
+				}
+			} else if (pos == 2) {
+				if (remain50 > 0) {
+					pnBoxes.add(createButton(i, possibleValues[2]));
+					remain50--;
+				} else {
+					if (remain250 > 0) {
+						pnBoxes.add(createButton(i, possibleValues[1]));
+						remain250--;
+					} else if (remain50 > 0) {
+						pnBoxes.add(createButton(i, possibleValues[2]));
+						remain50--;
+					} else if (remainDouble > 0) {
+						pnBoxes.add(createButton(i, possibleValues[3]));
+						remainDouble--;
+					} else if (remainSpecial > 0) {
+						pnBoxes.add(createButton(i, possibleValues[4]));
+						remainSpecial--;
+					} else {
+						pnBoxes.add(createButton(i, possibleValues[5]));
+					}
+				}
+			} else if (pos == 3) {
+				if (remainDouble > 0) {
+					pnBoxes.add(createButton(i, possibleValues[3]));
+					remainDouble--;
+				} else {
+					if (remain250 > 0) {
+						pnBoxes.add(createButton(i, possibleValues[1]));
+						remain250--;
+					} else if (remain50 > 0) {
+						pnBoxes.add(createButton(i, possibleValues[2]));
+						remain50--;
+					} else if (remainDouble > 0) {
+						pnBoxes.add(createButton(i, possibleValues[3]));
+						remainDouble--;
+					} else if (remainSpecial > 0) {
+						pnBoxes.add(createButton(i, possibleValues[4]));
+						remainSpecial--;
+					} else {
+						pnBoxes.add(createButton(i, possibleValues[5]));
+					}
+				}
+			} else if (pos == 4) {
+				if (remainSpecial > 0) {
+					pnBoxes.add(createButton(i, possibleValues[4]));
+					remainSpecial--;
+				} else {
+					if (remain250 > 0) {
+						pnBoxes.add(createButton(i, possibleValues[1]));
+						remain250--;
+					} else if (remain50 > 0) {
+						pnBoxes.add(createButton(i, possibleValues[2]));
+						remain50--;
+					} else if (remainDouble > 0) {
+						pnBoxes.add(createButton(i, possibleValues[3]));
+						remainDouble--;
+					} else if (remainSpecial > 0) {
+						pnBoxes.add(createButton(i, possibleValues[4]));
+						remainSpecial--;
+					} else {
+						pnBoxes.add(createButton(i, possibleValues[5]));
+					}
+				}
+			} else if (pos == 5) {
+				if (remainNothing > 0) {
+					pnBoxes.add(createButton(i, possibleValues[5]));
+					remainNothing--;
+				} else {
+					if (remain250 > 0) {
+						pnBoxes.add(createButton(i, possibleValues[1]));
+						remain250--;
+					} else if (remain50 > 0) {
+						pnBoxes.add(createButton(i, possibleValues[2]));
+						remain50--;
+					} else if (remainDouble > 0) {
+						pnBoxes.add(createButton(i, possibleValues[3]));
+						remainDouble--;
+					} else if (remainSpecial > 0) {
+						pnBoxes.add(createButton(i, possibleValues[4]));
+						remainSpecial--;
+					} else {
+						pnBoxes.add(createButton(i, possibleValues[5]));
+					}
+				}
 			}
 		}
 	}
@@ -1017,38 +1184,38 @@ public class MainWindow extends JFrame {
 		if (pnNorth_1 == null) {
 			pnNorth_1 = new JPanel();
 			pnNorth_1.setLayout(new GridLayout(0, 2, 0, 0));
-			pnNorth_1.add(getPnSizeLabel_3_1());
-			pnNorth_1.add(getPnSizeSlider_3_1());
+			pnNorth_1.add(getPnSizeLabel_4());
+			pnNorth_1.add(getPnSizeSlider_4());
 		}
 		return pnNorth_1;
 	}
 
-	private JPanel getPnSizeLabel_3_1() {
-		if (pnSizeLabel_3_1 == null) {
-			pnSizeLabel_3_1 = new JPanel();
-			pnSizeLabel_3_1.setLayout(new GridLayout(0, 1, 0, 0));
-			pnSizeLabel_3_1.add(getLblSelectYourGifts());
+	private JPanel getPnSizeLabel_4() {
+		if (pnSizeLabel_4 == null) {
+			pnSizeLabel_4 = new JPanel();
+			pnSizeLabel_4.setLayout(new GridLayout(0, 1, 0, 0));
+			pnSizeLabel_4.add(getLblSelectYourGifts4());
 		}
-		return pnSizeLabel_3_1;
+		return pnSizeLabel_4;
 	}
 
-	private JLabel getLblSelectYourGifts() {
-		if (lblSelectYourGifts == null) {
-			lblSelectYourGifts = new JLabel("SELECT YOUR GIFTS!!!");
-			lblSelectYourGifts.setHorizontalAlignment(SwingConstants.CENTER);
-			lblSelectYourGifts.setFont(new Font("Tahoma", Font.BOLD, 20));
+	private JLabel getLblSelectYourGifts4() {
+		if (lblSelectYourGifts4 == null) {
+			lblSelectYourGifts4 = new JLabel("SELECT YOUR GIFTS!!!");
+			lblSelectYourGifts4.setHorizontalAlignment(SwingConstants.CENTER);
+			lblSelectYourGifts4.setFont(new Font("Tahoma", Font.BOLD, 20));
 		}
-		return lblSelectYourGifts;
+		return lblSelectYourGifts4;
 	}
 
-	private JPanel getPnSizeSlider_3_1() {
-		if (pnSizeSlider_3_1 == null) {
-			pnSizeSlider_3_1 = new JPanel();
-			pnSizeSlider_3_1.setLayout(new GridLayout(3, 1, 0, 0));
-			pnSizeSlider_3_1.add(getPanel_193_1());
-			pnSizeSlider_3_1.add(getSlResize_3_1());
+	private JPanel getPnSizeSlider_4() {
+		if (pnSizeSlider_4 == null) {
+			pnSizeSlider_4 = new JPanel();
+			pnSizeSlider_4.setLayout(new GridLayout(3, 1, 0, 0));
+			pnSizeSlider_4.add(getPanel_193_1());
+			pnSizeSlider_4.add(getSlResize_4());
 		}
-		return pnSizeSlider_3_1;
+		return pnSizeSlider_4;
 	}
 
 	private JPanel getPanel_193_1() {
@@ -1058,13 +1225,74 @@ public class MainWindow extends JFrame {
 		return panel_193_1;
 	}
 
-	private JSlider getSlResize_3_1() {
-		if (slResize_3_1 == null) {
-			slResize_3_1 = new JSlider();
-			slResize_3_1.setValue(0);
-			slResize_3_1.setMaximum(60);
+	private JSlider getSlResize_4() {
+		if (slResize_4 == null) {
+			slResize_4 = new JSlider();
+			slResize_4.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+
+					if (slResize_4.getValue() < 25) {
+						getLblSelectYourGifts4().setFont(new Font("Tahoma",
+								Font.BOLD, 20 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 42) {
+						getLblRemainingPoints4().setFont(new Font("Tahoma",
+								Font.PLAIN, 11 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 42) {
+						getLblPointsCount().setFont(new Font("Tahoma",
+								Font.PLAIN, 11 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 37) {
+						getLblRedeemedGifts4().setFont(new Font("Tahoma",
+								Font.PLAIN, 11 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 25) {
+						getLblGifts().setFont(new Font("Tahoma", Font.PLAIN,
+								11 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 25) {
+						getBtnAdd4().setFont(new Font("Tahoma", Font.PLAIN,
+								11 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 25) {
+						getBtnRemove4().setFont(new Font("Tahoma", Font.PLAIN,
+								11 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 17) {
+						getLblCategory4().setFont(new Font("Tahoma", Font.PLAIN,
+								11 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 17) {
+						getLblOrder4().setFont(new Font("Tahoma", Font.PLAIN,
+								11 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 54) {
+						getBtnContinue4().setFont(new Font("Tahoma", Font.PLAIN,
+								11 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 17) {
+						getCbCategory().setFont(new Font("Tahoma", Font.PLAIN,
+								11 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 17) {
+						getCbOrder().setFont(new Font("Tahoma", Font.PLAIN,
+								11 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 17) {
+						getTxtSearch().setFont(new Font("Tahoma", Font.PLAIN,
+								11 + slResize_4.getValue()));
+					}
+					if (slResize_4.getValue() < 25) {
+						getCbGifts().setFont(new Font("Tahoma", Font.PLAIN,
+								11 + slResize_4.getValue()));
+					}
+				}
+			});
+			slResize_4.setValue(0);
+			slResize_4.setMaximum(53);
 		}
-		return slResize_3_1;
+		return slResize_4;
 	}
 
 	private JPanel getPanel_21() {
@@ -1102,7 +1330,7 @@ public class MainWindow extends JFrame {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
 			scrollPane.setViewportView(getRedeemedGiftList());
-			scrollPane.setColumnHeaderView(getLblNewLabel_6());
+			scrollPane.setColumnHeaderView(getLblRedeemedGifts4());
 		}
 		return scrollPane;
 	}
@@ -1131,18 +1359,25 @@ public class MainWindow extends JFrame {
 			btnContinue4.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (game.getRemainingPoints() > 0) {
-						switch(JOptionPane.showConfirmDialog(rootPane,
+						switch (JOptionPane.showConfirmDialog(rootPane,
 								"You didn't expend all your POINTS, the "
-								+ "remaining points will be lost forever.\n "
-								+ "You really want to continue?")) {
+										+ "remaining points will be lost "
+										+ "forever.\n "
+										+ "You really want to continue?")) {
 						case 0:
-							ListModel<Gift> d = getRedeemedGiftList().getModel();
+							ListModel<Gift> d = getRedeemedGiftList()
+									.getModel();
 							for (int i = 0; i < d.getSize(); i++) {
-								if (d.getElementAt(i).getSection().equals("V")) {
-									Travel t = new Travel(d.getElementAt(i).getName(),
-											ldt.getDayOfMonth(), ldt.getMonthValue(),
-											Year.MIN_VALUE + ldt.getYear());
+								if (d.getElementAt(i).getSection()
+										.equals("V")) {
+									Travel t = new Travel(
+											d.getElementAt(i).getName(),
+											ldt.getDayOfMonth(),
+											ldt.getMonthValue(),
+											Year.MIN_VALUE + ldt.getYear(), "");
 									travels.add(t);
+								} else {
+									redeemedGifts.add(d.getElementAt(i));
 								}
 							}
 							if (travels.getTravels().size() == 0) {
@@ -1156,6 +1391,29 @@ public class MainWindow extends JFrame {
 							}
 							break;
 						}
+					} else {
+						ListModel<Gift> d = getRedeemedGiftList().getModel();
+						for (int i = 0; i < d.getSize(); i++) {
+							if (d.getElementAt(i).getSection().equals("V")) {
+								Travel t = new Travel(
+										d.getElementAt(i).getName(),
+										ldt.getDayOfMonth(),
+										ldt.getMonthValue(),
+										Year.MIN_VALUE + ldt.getYear(), "");
+								travels.add(t);
+							} else {
+								redeemedGifts.add(d.getElementAt(i));
+							}
+						}
+						if (travels.getTravels().size() == 0) {
+							crd.show(getContentPane(), "pn6");
+						} else {
+							for (Travel t : travels.getTravels()) {
+								dcbTravelmodel.addElement(t);
+							}
+							cbRedeemedTravels.setModel(dcbTravelmodel);
+							crd.show(getContentPane(), "pn5");
+						}
 					}
 				}
 			});
@@ -1166,9 +1424,9 @@ public class MainWindow extends JFrame {
 	private JPanel getPanel_24() {
 		if (panel_24 == null) {
 			panel_24 = new JPanel();
-			panel_24.add(getLblNewLabel_1());
+			panel_24.add(getLblCategory4());
 			panel_24.add(getCbCategory());
-			panel_24.add(getLblNewLabel_2());
+			panel_24.add(getLblOrder4());
 			panel_24.add(getCbOrder());
 			panel_24.add(getTxtSearch());
 		}
@@ -1178,7 +1436,7 @@ public class MainWindow extends JFrame {
 	private JPanel getPanel_25() {
 		if (panel_25 == null) {
 			panel_25 = new JPanel();
-			panel_25.add(getLblNewLabel_5());
+			panel_25.add(getLblGifts());
 			panel_25.add(getCbGifts());
 			panel_25.add(getBtnAdd4());
 			panel_25.add(getBtnRemove4());
@@ -1186,11 +1444,11 @@ public class MainWindow extends JFrame {
 		return panel_25;
 	}
 
-	private JLabel getLblNewLabel_1() {
-		if (lblNewLabel_1 == null) {
-			lblNewLabel_1 = new JLabel("Category:");
+	private JLabel getLblCategory4() {
+		if (lblCategory4 == null) {
+			lblCategory4 = new JLabel("Category:");
 		}
-		return lblNewLabel_1;
+		return lblCategory4;
 	}
 
 	private JComboBox getCbCategory() {
@@ -1274,11 +1532,11 @@ public class MainWindow extends JFrame {
 		return cbCategory;
 	}
 
-	private JLabel getLblNewLabel_2() {
-		if (lblNewLabel_2 == null) {
-			lblNewLabel_2 = new JLabel("Order:");
+	private JLabel getLblOrder4() {
+		if (lblOrder4 == null) {
+			lblOrder4 = new JLabel("Order:");
 		}
-		return lblNewLabel_2;
+		return lblOrder4;
 	}
 
 	private JComboBox getCbOrder() {
@@ -1344,17 +1602,17 @@ public class MainWindow extends JFrame {
 	private JPanel getPanel_27() {
 		if (panel_27 == null) {
 			panel_27 = new JPanel();
-			panel_27.add(getLblRemainingPoints());
+			panel_27.add(getLblRemainingPoints4());
 			panel_27.add(getLblPointsCount());
 		}
 		return panel_27;
 	}
 
-	private JLabel getLblRemainingPoints() {
-		if (lblRemainingPoints == null) {
-			lblRemainingPoints = new JLabel("Remaining Points:");
+	private JLabel getLblRemainingPoints4() {
+		if (lblRemainingPoints4 == null) {
+			lblRemainingPoints4 = new JLabel("Remaining Points:");
 		}
-		return lblRemainingPoints;
+		return lblRemainingPoints4;
 	}
 
 	private JLabel getLblPointsCount() {
@@ -1365,11 +1623,11 @@ public class MainWindow extends JFrame {
 		return lblPointsCount;
 	}
 
-	private JLabel getLblNewLabel_5() {
-		if (lblNewLabel_5 == null) {
-			lblNewLabel_5 = new JLabel("Gifts:");
+	private JLabel getLblGifts() {
+		if (lblGifts == null) {
+			lblGifts = new JLabel("Gifts:");
 		}
-		return lblNewLabel_5;
+		return lblGifts;
 	}
 
 	private void adaptImage(JLabel label, String imagePath) {
@@ -1448,6 +1706,13 @@ public class MainWindow extends JFrame {
 					if (getRedeemedGiftList().getSelectedValue() != null) {
 						Gift g = (Gift) getRedeemedGiftList()
 								.getSelectedValue();
+						if(g.getSection().equals("V")) {
+							for (Travel t : travels.getTravels()) {
+								if(t.getDescription().equals(g.getName())) {
+									travels.remove(t);
+								}
+							}
+						}
 						dlmGifts.remove(
 								getRedeemedGiftList().getSelectedIndex());
 						game.setRemainingPoints(
@@ -1464,11 +1729,11 @@ public class MainWindow extends JFrame {
 		return btnRemove4;
 	}
 
-	private JLabel getLblNewLabel_6() {
-		if (lblNewLabel_6 == null) {
-			lblNewLabel_6 = new JLabel("Redeemed gifts:");
+	private JLabel getLblRedeemedGifts4() {
+		if (lblRedeemedGifts4 == null) {
+			lblRedeemedGifts4 = new JLabel("Redeemed gifts:");
 		}
-		return lblNewLabel_6;
+		return lblRedeemedGifts4;
 	}
 
 	private JPanel getPanel_28() {
@@ -1604,8 +1869,9 @@ public class MainWindow extends JFrame {
 	private JPanel getPnCalendar() {
 		if (pnCalendar == null) {
 			pnCalendar = new JPanel();
-			pnCalendar.setLayout(new GridLayout(0, 1, 0, 0));
+			pnCalendar.setLayout(new GridLayout(2, 1, 0, 0));
 			pnCalendar.add(getTravelCalendar());
+			pnCalendar.add(getPanel_29());
 		}
 		return pnCalendar;
 	}
@@ -1625,6 +1891,11 @@ public class MainWindow extends JFrame {
 	private JButton getBtnBack5() {
 		if (btnBack5 == null) {
 			btnBack5 = new JButton("Go Back");
+			btnBack5.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					crd.previous(getContentPane());
+				}
+			});
 			btnBack5.setBackground(Color.RED);
 			btnBack5.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		}
@@ -1634,7 +1905,13 @@ public class MainWindow extends JFrame {
 	private JButton getBtnContinue5() {
 		if (btnContinue5 == null) {
 			btnContinue5 = new JButton("Continue");
-			btnContinue5.setEnabled(false);
+			btnContinue5.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					FileUtil.saveToFile("deliveries", redeemedGifts,
+							travels.getTravels());
+					crd.next(getContentPane());
+				}
+			});
 			btnContinue5.setBackground(Color.GREEN);
 			btnContinue5.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		}
@@ -1644,8 +1921,49 @@ public class MainWindow extends JFrame {
 	private JButton getBtnAssignDate5() {
 		if (btnAssignDate5 == null) {
 			btnAssignDate5 = new JButton("Assign Date to Selected Travel");
+			btnAssignDate5.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Travel t = (Travel) getCbRedeemedTravels()
+							.getSelectedItem();
+					for (Travel travel : travels.getTravels()) {
+						if (travel.equals(t)) {
+							t.setDay(getTravelCalendar().getDayChooser()
+									.getDay());
+							t.setMonth(getTravelCalendar().getDate().getMonth()
+									+ 1);
+							t.setYear(getTravelCalendar().getDate().getYear()
+									+ 1900);
+							t.setObservations(getTxtObservations().getText());
+						}
+					}
+				}
+			});
 			btnAssignDate5.setBackground(Color.YELLOW);
 		}
 		return btnAssignDate5;
+	}
+
+	private JPanel getPanel_29() {
+		if (panel_29 == null) {
+			panel_29 = new JPanel();
+			panel_29.setLayout(new BorderLayout(0, 0));
+			panel_29.add(getLblObservations(), BorderLayout.NORTH);
+			panel_29.add(getTxtObservations());
+		}
+		return panel_29;
+	}
+
+	private JTextArea getTxtObservations() {
+		if (txtObservations == null) {
+			txtObservations = new JTextArea();
+		}
+		return txtObservations;
+	}
+
+	private JLabel getLblObservations() {
+		if (lblObservations == null) {
+			lblObservations = new JLabel("    Observations:");
+		}
+		return lblObservations;
 	}
 }

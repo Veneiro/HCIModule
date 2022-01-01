@@ -6,6 +6,7 @@ public class Travel {
 	private int day;
 	private int month;
 	private int year;
+	private String observations;
 
 	/**
 	 * @param description
@@ -13,12 +14,28 @@ public class Travel {
 	 * @param month
 	 * @param year
 	 */
-	public Travel(String description, int day, int month, int year) {
+	public Travel(String description, int day, int month, int year,
+			String observations) {
 		super();
 		this.description = description;
 		this.day = day;
 		this.month = month;
 		this.year = year;
+		this.observations = observations;
+	}
+
+	/**
+	 * @return the observations
+	 */
+	public String getObservations() {
+		return observations;
+	}
+
+	/**
+	 * @param observations the observations to set
+	 */
+	public void setObservations(String observations) {
+		this.observations = observations;
 	}
 
 	/**
@@ -81,5 +98,9 @@ public class Travel {
 	public String toString() {
 		return description;
 	}
-	
+
+	public String toStringComplete() {
+		return day + "/" + month + "/" + year + " - " + description + " - "
+				+ "Observations: " + observations;
+	}
 }
