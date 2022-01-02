@@ -83,34 +83,34 @@ public class MainWindow extends JFrame {
 	private JPanel pnGiftsBoard;
 	private JPanel pnSelectYourGifts;
 	private JPanel pnTravelSelect;
-	private JPanel panel_1;
-	private JPanel panel_2;
-	private JPanel panel_3;
-	private JPanel panel_4;
-	private JPanel panel_5;
-	private JPanel panel_6;
-	private JPanel panel_8;
-	private JPanel panel_9;
-	private JPanel panel_7;
-	private JPanel panel_10;
-	private JPanel panel_11;
-	private JPanel panel_14;
-	private JPanel panel_12;
-	private JPanel panel_13;
-	private JPanel panel_15;
-	private JPanel panel_16;
-	private JPanel panel_17;
-	private JPanel panel_18;
+	private JPanel pnMainContent2;
+	private JPanel pnHeader2;
+	private JPanel pnCenter2;
+	private JPanel pnBottom2;
+	private JPanel pnNorthSize;
+	private JPanel pnNorthGapSize;
+	private JPanel pnWestGapSize;
+	private JPanel pnEastGapSize;
+	private JPanel pnCodeIntroduction2;
+	private JPanel pnTextAreaCode2;
+	private JPanel pnWestGapCode2;
+	private JPanel pnEastGapCode2;
+	private JPanel pnBack2;
+	private JPanel pnBackButton2;
+	private JPanel pnSouthGapBack2;
+	private JPanel pnNorthGapBack2;
+	private JPanel pnTitle_Size2;
+	private JPanel pnSize2;
 	private JPanel pnSizeLabel_2;
-	
+
 	private JLabel lblChangeSize_2;
-	
+
 	private JPanel pnSizeSlider_2;
-	private JPanel panel_19;
-	private JPanel pnNorth;
+	private JPanel pnNorthGapSizeSlider;
+	private JPanel pnNorth3;
 	private JPanel pnSizeLabel_3;
 	private JPanel pnSizeSlider_3;
-	private JPanel panel_193;
+	private JPanel pnNorthGapSizeSlider3;
 
 	// LABELS
 	private JLabel lblTitle;
@@ -138,34 +138,34 @@ public class MainWindow extends JFrame {
 	private CardLayout crd;
 
 	private JLabel lblTitle3;
-	private JPanel pnEast;
+	private JPanel pnEast3;
 	private JButton btnContinue3;
 	private JButton btnBack3;
-	private JPanel panel_20;
+	private JPanel pnSouth3;
 	private JButton btnHelp3;
 	private JPanel pnBoxes;
-	private JPanel pnNorth_1;
+	private JPanel pnNorth4;
 	private JPanel pnSizeLabel_4;
 	private JLabel lblSelectYourGifts4;
 	private JPanel pnSizeSlider_4;
 	private JPanel panel_193_1;
 	private JSlider slResize_4;
-	private JPanel panel_21;
-	private JPanel panel_22;
-	private JPanel panel_23;
-	private JScrollPane scrollPane;
+	private JPanel pnCenter4;
+	private JPanel pnImportantInfo4;
+	private JPanel pnLists4;
+	private JScrollPane sPnRedeemedGifts4;
 	private JList RedeemedGiftList;
 	private JLabel lblImage;
 	private JButton btnContinue4;
-	private JPanel panel_24;
-	private JPanel panel_25;
+	private JPanel pnFilters4;
+	private JPanel pnComboGifts4;
 	private JLabel lblCategory4;
 	private JComboBox cbCategory;
 	private JLabel lblOrder4;
 	private JComboBox cbOrder;
 	private JTextField txtSearch;
-	private JPanel panel_26;
-	private JPanel panel_27;
+	private JPanel pnFiltersPoints4;
+	private JPanel pnPoints4;
 	private JLabel lblRemainingPoints4;
 	private JLabel lblPointsCount;
 	private JLabel lblGifts;
@@ -175,22 +175,22 @@ public class MainWindow extends JFrame {
 	private JLabel lblRedeemedGifts4;
 
 	// LOGIC CLASSES
+	private Game game = new Game(0, 3);
 	private Clients cli = new Clients();
 	private Gifts gf = new Gifts();
-	private Game game = new Game(0, 3);
 	private Travels travels = new Travels();
+	private LocalDateTime ldt = LocalDateTime.now();
+
 	private DefaultComboBoxModel dcbgiftm = new DefaultComboBoxModel();
 	private DefaultListModel dlmGifts = new DefaultListModel();
 	private MyButtonListener mbl = new MyButtonListener();
-	private LocalDateTime ldt = LocalDateTime.now();
 	private DefaultComboBoxModel<Travel> dcbTravelmodel = new DefaultComboBoxModel<Travel>();
-	private List<Gift> redeemedGifts = new ArrayList<Gift>();
 
-	private JPanel panel_28;
-	private JPanel pnNorth4;
-	private JPanel pnSouth4;
-	private JPanel pnWest4;
-	private JPanel pnEast4;
+	private JPanel pnGiftImage4;
+	private JPanel pnNorthImage4;
+	private JPanel pnSouthImage4;
+	private JPanel pnWestImage4;
+	private JPanel pnEastImage4;
 	private JPanel pnFinish;
 	private JLabel lblTitle6;
 	private JLabel lblNewLabel;
@@ -198,15 +198,15 @@ public class MainWindow extends JFrame {
 	private JCalendar travelCalendar;
 	private JPanel pnNorth5;
 	private JLabel lblTitle5;
-	private JPanel pnCbTravels;
+	private JPanel pnCbTravels5;
 	private JComboBox cbRedeemedTravels;
 	private JLabel lblSelectTravel;
 	private JPanel pnCalendar;
-	private JPanel panel_30;
+	private JPanel pnSouth5;
 	private JButton btnBack5;
 	private JButton btnContinue5;
 	private JButton btnAssignDate5;
-	private JPanel panel_29;
+	private JPanel pnObservations5;
 	private JTextArea txtObservations;
 	private JLabel lblObservations;
 
@@ -237,29 +237,29 @@ public class MainWindow extends JFrame {
 	private void reinitializate() {
 		Main.main(null);
 	}
-	
-	private void loadHelp(){
 
-		   URL hsURL;
-		   HelpSet hs;
+	private void loadHelp() {
 
-		    try {
-			    	File fichero = new File("help/Help.hs");
-			    	hsURL = fichero.toURI().toURL();
-			        hs = new HelpSet(null, hsURL);
-			      }
+		URL hsURL;
+		HelpSet hs;
 
-		    catch (Exception e){
-		      System.out.println("Help not found!");
-		      return;
-		   }
+		try {
+			File fichero = new File("help/Help.hs");
+			hsURL = fichero.toURI().toURL();
+			hs = new HelpSet(null, hsURL);
+		}
 
-		   HelpBroker hb = hs.createHelpBroker();
+		catch (Exception e) {
+			System.out.println("Help not found!");
+			return;
+		}
 
-		   hb.enableHelpKey(getRootPane(),"intro", hs);
-		   hb.enableHelpOnButton(getBtnHelp3(), "howtoplay", hs);
-		   hb.enableHelpOnButton(getBtnHelp(), "intro", hs);
-		 }
+		HelpBroker hb = hs.createHelpBroker();
+
+		hb.enableHelpKey(getRootPane(), "intro", hs);
+		hb.enableHelpOnButton(getBtnHelp3(), "howtoplay", hs);
+		hb.enableHelpOnButton(getBtnHelp(), "intro", hs);
+	}
 
 	private JPanel getPnMainContent() {
 		if (pnMainContent == null) {
@@ -469,7 +469,7 @@ public class MainWindow extends JFrame {
 		if (pnNorthGap == null) {
 			pnNorthGap = new JPanel();
 			pnNorthGap.setLayout(new GridLayout(0, 1, 0, 0));
-			pnNorthGap.add(getPanel_5());
+			pnNorthGap.add(getPnNorthSize());
 		}
 		return pnNorthGap;
 	}
@@ -478,7 +478,7 @@ public class MainWindow extends JFrame {
 		if (pnLoyaltyCode == null) {
 			pnLoyaltyCode = new JPanel();
 			pnLoyaltyCode.setLayout(new BorderLayout(0, 0));
-			pnLoyaltyCode.add(getPanel_1(), BorderLayout.CENTER);
+			pnLoyaltyCode.add(getPnMainContent2(), BorderLayout.CENTER);
 		}
 		return pnLoyaltyCode;
 	}
@@ -487,10 +487,10 @@ public class MainWindow extends JFrame {
 		if (pnGiftsBoard == null) {
 			pnGiftsBoard = new JPanel();
 			pnGiftsBoard.setLayout(new BorderLayout(0, 0));
-			pnGiftsBoard.add(getPnNorth(), BorderLayout.NORTH);
-			pnGiftsBoard.add(getPnEast(), BorderLayout.EAST);
-			pnGiftsBoard.add(getPanel_20(), BorderLayout.SOUTH);
-			pnGiftsBoard.add(getPnBoxes(), BorderLayout.CENTER);
+			pnGiftsBoard.add(getPnNorth3(), BorderLayout.NORTH);
+			pnGiftsBoard.add(getPnEast3(), BorderLayout.EAST);
+			pnGiftsBoard.add(getPnSouth3(), BorderLayout.SOUTH);
+			pnGiftsBoard.add(getPnBoxes3(), BorderLayout.CENTER);
 
 		}
 		return pnGiftsBoard;
@@ -500,8 +500,8 @@ public class MainWindow extends JFrame {
 		if (pnSelectYourGifts == null) {
 			pnSelectYourGifts = new JPanel();
 			pnSelectYourGifts.setLayout(new BorderLayout(0, 0));
-			pnSelectYourGifts.add(getPnNorth_1(), BorderLayout.NORTH);
-			pnSelectYourGifts.add(getPanel_21(), BorderLayout.CENTER);
+			pnSelectYourGifts.add(getPnNorth4(), BorderLayout.NORTH);
+			pnSelectYourGifts.add(getPnCenter4(), BorderLayout.CENTER);
 		}
 		return pnSelectYourGifts;
 	}
@@ -512,7 +512,7 @@ public class MainWindow extends JFrame {
 			pnTravelSelect.setLayout(new BorderLayout(0, 0));
 			pnTravelSelect.add(getPnNorth5(), BorderLayout.NORTH);
 			pnTravelSelect.add(getPnCalendar(), BorderLayout.CENTER);
-			pnTravelSelect.add(getPanel_30(), BorderLayout.SOUTH);
+			pnTravelSelect.add(getPnSouth5(), BorderLayout.SOUTH);
 		}
 		return pnTravelSelect;
 	}
@@ -524,78 +524,78 @@ public class MainWindow extends JFrame {
 		return travelCalendar;
 	}
 
-	private JPanel getPanel_1() {
-		if (panel_1 == null) {
-			panel_1 = new JPanel();
-			panel_1.setLayout(new GridLayout(3, 1, 0, 0));
-			panel_1.add(getPanel_2());
-			panel_1.add(getPanel_3());
-			panel_1.add(getPanel_4());
+	private JPanel getPnMainContent2() {
+		if (pnMainContent2 == null) {
+			pnMainContent2 = new JPanel();
+			pnMainContent2.setLayout(new GridLayout(3, 1, 0, 0));
+			pnMainContent2.add(getPnHeader2());
+			pnMainContent2.add(getPnCenter2());
+			pnMainContent2.add(getPnBottom2());
 		}
-		return panel_1;
+		return pnMainContent2;
 	}
 
-	private JPanel getPanel_2() {
-		if (panel_2 == null) {
-			panel_2 = new JPanel();
-			panel_2.setLayout(new GridLayout(2, 0, 0, 0));
-			panel_2.add(getPanel_17());
-			panel_2.add(getLblSubtitleLoyalty());
+	private JPanel getPnHeader2() {
+		if (pnHeader2 == null) {
+			pnHeader2 = new JPanel();
+			pnHeader2.setLayout(new GridLayout(2, 0, 0, 0));
+			pnHeader2.add(getPnTitle_Size2());
+			pnHeader2.add(getLblSubtitleLoyalty());
 		}
-		return panel_2;
+		return pnHeader2;
 	}
 
-	private JPanel getPanel_3() {
-		if (panel_3 == null) {
-			panel_3 = new JPanel();
-			panel_3.setLayout(new GridLayout(2, 0, 0, 0));
-			panel_3.add(getLblIntroduceCode());
-			panel_3.add(getPanel_7_1());
+	private JPanel getPnCenter2() {
+		if (pnCenter2 == null) {
+			pnCenter2 = new JPanel();
+			pnCenter2.setLayout(new GridLayout(2, 0, 0, 0));
+			pnCenter2.add(getLblIntroduceCode());
+			pnCenter2.add(getPanel_7_1());
 		}
-		return panel_3;
+		return pnCenter2;
 	}
 
-	private JPanel getPanel_4() {
-		if (panel_4 == null) {
-			panel_4 = new JPanel();
-			panel_4.setLayout(new GridLayout(2, 0, 0, 0));
-			panel_4.add(getBtnContinue2());
-			panel_4.add(getPanel_12());
+	private JPanel getPnBottom2() {
+		if (pnBottom2 == null) {
+			pnBottom2 = new JPanel();
+			pnBottom2.setLayout(new GridLayout(2, 0, 0, 0));
+			pnBottom2.add(getBtnContinue2());
+			pnBottom2.add(getPnBack2());
 		}
-		return panel_4;
+		return pnBottom2;
 	}
 
-	private JPanel getPanel_5() {
-		if (panel_5 == null) {
-			panel_5 = new JPanel();
-			panel_5.setLayout(new BorderLayout(0, 0));
-			panel_5.add(getPnSize());
-			panel_5.add(getPanel_6(), BorderLayout.NORTH);
-			panel_5.add(getPanel_8(), BorderLayout.WEST);
-			panel_5.add(getPanel_9(), BorderLayout.EAST);
+	private JPanel getPnNorthSize() {
+		if (pnNorthSize == null) {
+			pnNorthSize = new JPanel();
+			pnNorthSize.setLayout(new BorderLayout(0, 0));
+			pnNorthSize.add(getPnSize());
+			pnNorthSize.add(getPnNorthGapSize(), BorderLayout.NORTH);
+			pnNorthSize.add(getPnWestGapSize(), BorderLayout.WEST);
+			pnNorthSize.add(getPnEastGapSize(), BorderLayout.EAST);
 		}
-		return panel_5;
+		return pnNorthSize;
 	}
 
-	private JPanel getPanel_6() {
-		if (panel_6 == null) {
-			panel_6 = new JPanel();
+	private JPanel getPnNorthGapSize() {
+		if (pnNorthGapSize == null) {
+			pnNorthGapSize = new JPanel();
 		}
-		return panel_6;
+		return pnNorthGapSize;
 	}
 
-	private JPanel getPanel_8() {
-		if (panel_8 == null) {
-			panel_8 = new JPanel();
+	private JPanel getPnWestGapSize() {
+		if (pnWestGapSize == null) {
+			pnWestGapSize = new JPanel();
 		}
-		return panel_8;
+		return pnWestGapSize;
 	}
 
-	private JPanel getPanel_9() {
-		if (panel_9 == null) {
-			panel_9 = new JPanel();
+	private JPanel getPnEastGapSize() {
+		if (pnEastGapSize == null) {
+			pnEastGapSize = new JPanel();
 		}
-		return panel_9;
+		return pnEastGapSize;
 	}
 
 	private JLabel getLblTitleLoyalty() {
@@ -627,12 +627,12 @@ public class MainWindow extends JFrame {
 	}
 
 	private JPanel getPanel_7_1() {
-		if (panel_7 == null) {
-			panel_7 = new JPanel();
-			panel_7.setLayout(new GridLayout(2, 1, 0, 0));
-			panel_7.add(getPanel_10());
+		if (pnCodeIntroduction2 == null) {
+			pnCodeIntroduction2 = new JPanel();
+			pnCodeIntroduction2.setLayout(new GridLayout(2, 1, 0, 0));
+			pnCodeIntroduction2.add(getPnTextAreaCode2());
 		}
-		return panel_7;
+		return pnCodeIntroduction2;
 	}
 
 	private JTextField getTxtCode() {
@@ -653,6 +653,7 @@ public class MainWindow extends JFrame {
 			btnContinue2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (checkCode(getTxtCode().getText())) {
+						game.setClientLogged(getTxtCode().getText());
 						crd.next(getContentPane());
 						setTitle("Board : Gifts Panel");
 					} else {
@@ -676,39 +677,39 @@ public class MainWindow extends JFrame {
 		return false;
 	}
 
-	private JPanel getPanel_10() {
-		if (panel_10 == null) {
-			panel_10 = new JPanel();
-			panel_10.setLayout(new BorderLayout(0, 0));
-			panel_10.add(getTxtCode());
-			panel_10.add(getPanel_11(), BorderLayout.WEST);
-			panel_10.add(getPanel_14(), BorderLayout.EAST);
+	private JPanel getPnTextAreaCode2() {
+		if (pnTextAreaCode2 == null) {
+			pnTextAreaCode2 = new JPanel();
+			pnTextAreaCode2.setLayout(new BorderLayout(0, 0));
+			pnTextAreaCode2.add(getTxtCode());
+			pnTextAreaCode2.add(getPnWestGapCode2(), BorderLayout.WEST);
+			pnTextAreaCode2.add(getPnEastGapCode2(), BorderLayout.EAST);
 		}
-		return panel_10;
+		return pnTextAreaCode2;
 	}
 
-	private JPanel getPanel_11() {
-		if (panel_11 == null) {
-			panel_11 = new JPanel();
+	private JPanel getPnWestGapCode2() {
+		if (pnWestGapCode2 == null) {
+			pnWestGapCode2 = new JPanel();
 		}
-		return panel_11;
+		return pnWestGapCode2;
 	}
 
-	private JPanel getPanel_14() {
-		if (panel_14 == null) {
-			panel_14 = new JPanel();
+	private JPanel getPnEastGapCode2() {
+		if (pnEastGapCode2 == null) {
+			pnEastGapCode2 = new JPanel();
 		}
-		return panel_14;
+		return pnEastGapCode2;
 	}
 
-	private JPanel getPanel_12() {
-		if (panel_12 == null) {
-			panel_12 = new JPanel();
-			panel_12.setLayout(new GridLayout(2, 3, 0, 0));
-			panel_12.add(getPanel_16());
-			panel_12.add(getPanel_13());
+	private JPanel getPnBack2() {
+		if (pnBack2 == null) {
+			pnBack2 = new JPanel();
+			pnBack2.setLayout(new GridLayout(2, 3, 0, 0));
+			pnBack2.add(getPnNorthGapBack2());
+			pnBack2.add(getPnBackButton2());
 		}
-		return panel_12;
+		return pnBack2;
 	}
 
 	private JButton getBtnBack2() {
@@ -725,49 +726,49 @@ public class MainWindow extends JFrame {
 		return btnBack2;
 	}
 
-	private JPanel getPanel_13() {
-		if (panel_13 == null) {
-			panel_13 = new JPanel();
-			panel_13.setLayout(new BorderLayout(0, 0));
-			panel_13.add(getBtnBack2());
-			panel_13.add(getPanel_15(), BorderLayout.SOUTH);
+	private JPanel getPnBackButton2() {
+		if (pnBackButton2 == null) {
+			pnBackButton2 = new JPanel();
+			pnBackButton2.setLayout(new BorderLayout(0, 0));
+			pnBackButton2.add(getBtnBack2());
+			pnBackButton2.add(getPnSouthGapBack2(), BorderLayout.SOUTH);
 		}
-		return panel_13;
+		return pnBackButton2;
 	}
 
-	private JPanel getPanel_15() {
-		if (panel_15 == null) {
-			panel_15 = new JPanel();
+	private JPanel getPnSouthGapBack2() {
+		if (pnSouthGapBack2 == null) {
+			pnSouthGapBack2 = new JPanel();
 		}
-		return panel_15;
+		return pnSouthGapBack2;
 	}
 
-	private JPanel getPanel_16() {
-		if (panel_16 == null) {
-			panel_16 = new JPanel();
-			panel_16.setLayout(new GridLayout(1, 0, 0, 0));
+	private JPanel getPnNorthGapBack2() {
+		if (pnNorthGapBack2 == null) {
+			pnNorthGapBack2 = new JPanel();
+			pnNorthGapBack2.setLayout(new GridLayout(1, 0, 0, 0));
 		}
-		return panel_16;
+		return pnNorthGapBack2;
 	}
 
-	private JPanel getPanel_17() {
-		if (panel_17 == null) {
-			panel_17 = new JPanel();
-			panel_17.setLayout(new GridLayout(2, 1, 0, 0));
-			panel_17.add(getPanel_18());
-			panel_17.add(getLblTitleLoyalty());
+	private JPanel getPnTitle_Size2() {
+		if (pnTitle_Size2 == null) {
+			pnTitle_Size2 = new JPanel();
+			pnTitle_Size2.setLayout(new GridLayout(2, 1, 0, 0));
+			pnTitle_Size2.add(getPnSize2());
+			pnTitle_Size2.add(getLblTitleLoyalty());
 		}
-		return panel_17;
+		return pnTitle_Size2;
 	}
 
-	private JPanel getPanel_18() {
-		if (panel_18 == null) {
-			panel_18 = new JPanel();
-			panel_18.setLayout(new GridLayout(0, 2, 0, 0));
-			panel_18.add(getPnSizeLabel_2());
-			panel_18.add(getPnSizeSlider_2());
+	private JPanel getPnSize2() {
+		if (pnSize2 == null) {
+			pnSize2 = new JPanel();
+			pnSize2.setLayout(new GridLayout(0, 2, 0, 0));
+			pnSize2.add(getPnSizeLabel_2());
+			pnSize2.add(getPnSizeSlider_2());
 		}
-		return panel_18;
+		return pnSize2;
 	}
 
 	private JPanel getPnSizeLabel_2() {
@@ -793,17 +794,17 @@ public class MainWindow extends JFrame {
 		if (pnSizeSlider_2 == null) {
 			pnSizeSlider_2 = new JPanel();
 			pnSizeSlider_2.setLayout(new GridLayout(3, 1, 0, 0));
-			pnSizeSlider_2.add(getPanel_19());
+			pnSizeSlider_2.add(getPnNorthGapSizeSlider());
 			pnSizeSlider_2.add(getSlResize_2());
 		}
 		return pnSizeSlider_2;
 	}
 
-	private JPanel getPanel_19() {
-		if (panel_19 == null) {
-			panel_19 = new JPanel();
+	private JPanel getPnNorthGapSizeSlider() {
+		if (pnNorthGapSizeSlider == null) {
+			pnNorthGapSizeSlider = new JPanel();
 		}
-		return panel_19;
+		return pnNorthGapSizeSlider;
 	}
 
 	private JSlider getSlResize_2() {
@@ -848,14 +849,14 @@ public class MainWindow extends JFrame {
 		return slResize_2;
 	}
 
-	private JPanel getPnNorth() {
-		if (pnNorth == null) {
-			pnNorth = new JPanel();
-			pnNorth.setLayout(new GridLayout(0, 2, 0, 0));
-			pnNorth.add(getPnSizeLabel_3());
-			pnNorth.add(getPnSizeSlider_3());
+	private JPanel getPnNorth3() {
+		if (pnNorth3 == null) {
+			pnNorth3 = new JPanel();
+			pnNorth3.setLayout(new GridLayout(0, 2, 0, 0));
+			pnNorth3.add(getPnSizeLabel_3());
+			pnNorth3.add(getPnSizeSlider_3());
 		}
-		return pnNorth;
+		return pnNorth3;
 	}
 
 	private JPanel getPnSizeLabel_3() {
@@ -881,17 +882,17 @@ public class MainWindow extends JFrame {
 		if (pnSizeSlider_3 == null) {
 			pnSizeSlider_3 = new JPanel();
 			pnSizeSlider_3.setLayout(new GridLayout(3, 1, 0, 0));
-			pnSizeSlider_3.add(getPanel_193());
+			pnSizeSlider_3.add(getPnNorthGapSizeSlider3());
 			pnSizeSlider_3.add(getSlResize_3());
 		}
 		return pnSizeSlider_3;
 	}
 
-	private JPanel getPanel_193() {
-		if (panel_193 == null) {
-			panel_193 = new JPanel();
+	private JPanel getPnNorthGapSizeSlider3() {
+		if (pnNorthGapSizeSlider3 == null) {
+			pnNorthGapSizeSlider3 = new JPanel();
 		}
-		return panel_193;
+		return pnNorthGapSizeSlider3;
 	}
 
 	private JSlider getSlResize_3() {
@@ -923,14 +924,14 @@ public class MainWindow extends JFrame {
 		return slResize_3;
 	}
 
-	private JPanel getPnEast() {
-		if (pnEast == null) {
-			pnEast = new JPanel();
-			pnEast.setLayout(new GridLayout(2, 2, 0, 0));
-			pnEast.add(getBtnContinue3());
-			pnEast.add(getBtnBack3());
+	private JPanel getPnEast3() {
+		if (pnEast3 == null) {
+			pnEast3 = new JPanel();
+			pnEast3.setLayout(new GridLayout(2, 2, 0, 0));
+			pnEast3.add(getBtnContinue3());
+			pnEast3.add(getBtnBack3());
 		}
-		return pnEast;
+		return pnEast3;
 	}
 
 	private JButton getBtnContinue3() {
@@ -976,13 +977,13 @@ public class MainWindow extends JFrame {
 		return btnBack3;
 	}
 
-	private JPanel getPanel_20() {
-		if (panel_20 == null) {
-			panel_20 = new JPanel();
-			panel_20.setLayout(new BorderLayout(0, 0));
-			panel_20.add(getBtnHelp3(), BorderLayout.NORTH);
+	private JPanel getPnSouth3() {
+		if (pnSouth3 == null) {
+			pnSouth3 = new JPanel();
+			pnSouth3.setLayout(new BorderLayout(0, 0));
+			pnSouth3.add(getBtnHelp3(), BorderLayout.NORTH);
 		}
-		return panel_20;
+		return pnSouth3;
 	}
 
 	private JButton getBtnHelp3() {
@@ -993,7 +994,7 @@ public class MainWindow extends JFrame {
 		return btnHelp3;
 	}
 
-	private JPanel getPnBoxes() {
+	private JPanel getPnBoxes3() {
 		if (pnBoxes == null) {
 			pnBoxes = new JPanel();
 			pnBoxes.setLayout(new GridLayout(5, 5, 10, 10));
@@ -1172,7 +1173,7 @@ public class MainWindow extends JFrame {
 						.setText(String.valueOf(game.getRemainingPoints()));
 			}
 			if (game.getRemainingTrys() == 0) {
-				for (Component c : getPnBoxes().getComponents()) {
+				for (Component c : getPnBoxes3().getComponents()) {
 					c.setEnabled(false);
 				}
 				getBtnContinue3().setEnabled(true);
@@ -1180,14 +1181,14 @@ public class MainWindow extends JFrame {
 		}
 	}
 
-	private JPanel getPnNorth_1() {
-		if (pnNorth_1 == null) {
-			pnNorth_1 = new JPanel();
-			pnNorth_1.setLayout(new GridLayout(0, 2, 0, 0));
-			pnNorth_1.add(getPnSizeLabel_4());
-			pnNorth_1.add(getPnSizeSlider_4());
+	private JPanel getPnNorth4() {
+		if (pnNorth4 == null) {
+			pnNorth4 = new JPanel();
+			pnNorth4.setLayout(new GridLayout(0, 2, 0, 0));
+			pnNorth4.add(getPnSizeLabel_4());
+			pnNorth4.add(getPnSizeSlider_4());
 		}
-		return pnNorth_1;
+		return pnNorth4;
 	}
 
 	private JPanel getPnSizeLabel_4() {
@@ -1295,44 +1296,44 @@ public class MainWindow extends JFrame {
 		return slResize_4;
 	}
 
-	private JPanel getPanel_21() {
-		if (panel_21 == null) {
-			panel_21 = new JPanel();
-			panel_21.setLayout(new BorderLayout(0, 0));
-			panel_21.add(getPanel_22(), BorderLayout.NORTH);
-			panel_21.add(getPanel_23(), BorderLayout.CENTER);
+	private JPanel getPnCenter4() {
+		if (pnCenter4 == null) {
+			pnCenter4 = new JPanel();
+			pnCenter4.setLayout(new BorderLayout(0, 0));
+			pnCenter4.add(getPnImportantInfo4(), BorderLayout.NORTH);
+			pnCenter4.add(getPnLists4(), BorderLayout.CENTER);
 		}
-		return panel_21;
+		return pnCenter4;
 	}
 
-	private JPanel getPanel_22() {
-		if (panel_22 == null) {
-			panel_22 = new JPanel();
-			panel_22.setLayout(new GridLayout(2, 0, 0, 0));
-			panel_22.add(getPanel_26());
-			panel_22.add(getPanel_25());
+	private JPanel getPnImportantInfo4() {
+		if (pnImportantInfo4 == null) {
+			pnImportantInfo4 = new JPanel();
+			pnImportantInfo4.setLayout(new GridLayout(2, 0, 0, 0));
+			pnImportantInfo4.add(getPnFiltersPoints4());
+			pnImportantInfo4.add(getPnComboGifts4());
 		}
-		return panel_22;
+		return pnImportantInfo4;
 	}
 
-	private JPanel getPanel_23() {
-		if (panel_23 == null) {
-			panel_23 = new JPanel();
-			panel_23.setLayout(new GridLayout(0, 3, 0, 0));
-			panel_23.add(getScrollPane());
-			panel_23.add(getPanel_28());
-			panel_23.add(getBtnContinue4());
+	private JPanel getPnLists4() {
+		if (pnLists4 == null) {
+			pnLists4 = new JPanel();
+			pnLists4.setLayout(new GridLayout(0, 3, 0, 0));
+			pnLists4.add(getSPnRedeemedGifts4());
+			pnLists4.add(getPnGiftImage4());
+			pnLists4.add(getBtnContinue4());
 		}
-		return panel_23;
+		return pnLists4;
 	}
 
-	private JScrollPane getScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new JScrollPane();
-			scrollPane.setViewportView(getRedeemedGiftList());
-			scrollPane.setColumnHeaderView(getLblRedeemedGifts4());
+	private JScrollPane getSPnRedeemedGifts4() {
+		if (sPnRedeemedGifts4 == null) {
+			sPnRedeemedGifts4 = new JScrollPane();
+			sPnRedeemedGifts4.setViewportView(getRedeemedGiftList());
+			sPnRedeemedGifts4.setColumnHeaderView(getLblRedeemedGifts4());
 		}
-		return scrollPane;
+		return sPnRedeemedGifts4;
 	}
 
 	private JList getRedeemedGiftList() {
@@ -1358,6 +1359,7 @@ public class MainWindow extends JFrame {
 			btnContinue4.setBackground(Color.GREEN);
 			btnContinue4.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					// You didn't spend all the points
 					if (game.getRemainingPoints() > 0) {
 						switch (JOptionPane.showConfirmDialog(rootPane,
 								"You didn't expend all your POINTS, the "
@@ -1367,20 +1369,29 @@ public class MainWindow extends JFrame {
 						case 0:
 							ListModel<Gift> d = getRedeemedGiftList()
 									.getModel();
+							if (dcbTravelmodel.getSize() != 0) {
+								travels.setTravels(new ArrayList<Travel>());
+								dcbTravelmodel.removeAllElements();
+							}
 							for (int i = 0; i < d.getSize(); i++) {
 								if (d.getElementAt(i).getSection()
 										.equals("V")) {
 									Travel t = new Travel(
 											d.getElementAt(i).getName(),
+											d.getElementAt(i).getCode(),
 											ldt.getDayOfMonth(),
 											ldt.getMonthValue(),
 											Year.MIN_VALUE + ldt.getYear(), "");
 									travels.add(t);
 								} else {
-									redeemedGifts.add(d.getElementAt(i));
+									game.addRedeemedGift((d.getElementAt(i)));
 								}
 							}
 							if (travels.getTravels().size() == 0) {
+								FileUtil.saveToFile("deliveries",
+										game.getClientLogged(),
+										game.getRedeemedGifts(),
+										travels.getTravels());
 								crd.show(getContentPane(), "pn6");
 							} else {
 								for (Travel t : travels.getTravels()) {
@@ -1391,23 +1402,33 @@ public class MainWindow extends JFrame {
 							}
 							break;
 						}
-					} else {
+					} else { // You spend all your points
 						ListModel<Gift> d = getRedeemedGiftList().getModel();
+						if (dcbTravelmodel.getSize() != 0) {
+							travels.setTravels(new ArrayList<Travel>());
+							dcbTravelmodel.removeAllElements();
+						}
 						for (int i = 0; i < d.getSize(); i++) {
 							if (d.getElementAt(i).getSection().equals("V")) {
 								Travel t = new Travel(
 										d.getElementAt(i).getName(),
+										d.getElementAt(i).getCode(),
 										ldt.getDayOfMonth(),
 										ldt.getMonthValue(),
 										Year.MIN_VALUE + ldt.getYear(), "");
 								travels.add(t);
 							} else {
-								redeemedGifts.add(d.getElementAt(i));
+								game.addRedeemedGift((d.getElementAt(i)));
 							}
 						}
+						// No travels selected
 						if (travels.getTravels().size() == 0) {
+							FileUtil.saveToFile("deliveries",
+									game.getClientLogged(),
+									game.getRedeemedGifts(),
+									travels.getTravels());
 							crd.show(getContentPane(), "pn6");
-						} else {
+						} else { // One or more travels selected
 							for (Travel t : travels.getTravels()) {
 								dcbTravelmodel.addElement(t);
 							}
@@ -1421,27 +1442,27 @@ public class MainWindow extends JFrame {
 		return btnContinue4;
 	}
 
-	private JPanel getPanel_24() {
-		if (panel_24 == null) {
-			panel_24 = new JPanel();
-			panel_24.add(getLblCategory4());
-			panel_24.add(getCbCategory());
-			panel_24.add(getLblOrder4());
-			panel_24.add(getCbOrder());
-			panel_24.add(getTxtSearch());
+	private JPanel getPnFilters4() {
+		if (pnFilters4 == null) {
+			pnFilters4 = new JPanel();
+			pnFilters4.add(getLblCategory4());
+			pnFilters4.add(getCbCategory());
+			pnFilters4.add(getLblOrder4());
+			pnFilters4.add(getCbOrder());
+			pnFilters4.add(getTxtSearch());
 		}
-		return panel_24;
+		return pnFilters4;
 	}
 
-	private JPanel getPanel_25() {
-		if (panel_25 == null) {
-			panel_25 = new JPanel();
-			panel_25.add(getLblGifts());
-			panel_25.add(getCbGifts());
-			panel_25.add(getBtnAdd4());
-			panel_25.add(getBtnRemove4());
+	private JPanel getPnComboGifts4() {
+		if (pnComboGifts4 == null) {
+			pnComboGifts4 = new JPanel();
+			pnComboGifts4.add(getLblGifts());
+			pnComboGifts4.add(getCbGifts());
+			pnComboGifts4.add(getBtnAdd4());
+			pnComboGifts4.add(getBtnRemove4());
 		}
-		return panel_25;
+		return pnComboGifts4;
 	}
 
 	private JLabel getLblCategory4() {
@@ -1589,23 +1610,23 @@ public class MainWindow extends JFrame {
 		return txtSearch;
 	}
 
-	private JPanel getPanel_26() {
-		if (panel_26 == null) {
-			panel_26 = new JPanel();
-			panel_26.setLayout(new GridLayout(0, 2, 0, 0));
-			panel_26.add(getPanel_27());
-			panel_26.add(getPanel_24());
+	private JPanel getPnFiltersPoints4() {
+		if (pnFiltersPoints4 == null) {
+			pnFiltersPoints4 = new JPanel();
+			pnFiltersPoints4.setLayout(new GridLayout(0, 2, 0, 0));
+			pnFiltersPoints4.add(getPnPoints4());
+			pnFiltersPoints4.add(getPnFilters4());
 		}
-		return panel_26;
+		return pnFiltersPoints4;
 	}
 
-	private JPanel getPanel_27() {
-		if (panel_27 == null) {
-			panel_27 = new JPanel();
-			panel_27.add(getLblRemainingPoints4());
-			panel_27.add(getLblPointsCount());
+	private JPanel getPnPoints4() {
+		if (pnPoints4 == null) {
+			pnPoints4 = new JPanel();
+			pnPoints4.add(getLblRemainingPoints4());
+			pnPoints4.add(getLblPointsCount());
 		}
-		return panel_27;
+		return pnPoints4;
 	}
 
 	private JLabel getLblRemainingPoints4() {
@@ -1706,12 +1727,14 @@ public class MainWindow extends JFrame {
 					if (getRedeemedGiftList().getSelectedValue() != null) {
 						Gift g = (Gift) getRedeemedGiftList()
 								.getSelectedValue();
-						if(g.getSection().equals("V")) {
+						if (g.getSection().equals("V")) {
 							for (Travel t : travels.getTravels()) {
-								if(t.getDescription().equals(g.getName())) {
+								if (t.getDescription().equals(g.getName())) {
 									travels.remove(t);
 								}
 							}
+						} else {
+							game.removeRedeemedGift(g);
 						}
 						dlmGifts.remove(
 								getRedeemedGiftList().getSelectedIndex());
@@ -1736,45 +1759,45 @@ public class MainWindow extends JFrame {
 		return lblRedeemedGifts4;
 	}
 
-	private JPanel getPanel_28() {
-		if (panel_28 == null) {
-			panel_28 = new JPanel();
-			panel_28.setLayout(new BorderLayout(0, 0));
-			panel_28.add(getLblImage());
-			panel_28.add(getPnNorth4(), BorderLayout.NORTH);
-			panel_28.add(getPnSouth4(), BorderLayout.SOUTH);
-			panel_28.add(getPnWest4(), BorderLayout.WEST);
-			panel_28.add(getPnEast4(), BorderLayout.EAST);
+	private JPanel getPnGiftImage4() {
+		if (pnGiftImage4 == null) {
+			pnGiftImage4 = new JPanel();
+			pnGiftImage4.setLayout(new BorderLayout(0, 0));
+			pnGiftImage4.add(getLblImage());
+			pnGiftImage4.add(getPnNorthImage4(), BorderLayout.NORTH);
+			pnGiftImage4.add(getPnSouthImage4(), BorderLayout.SOUTH);
+			pnGiftImage4.add(getPnWestImage4(), BorderLayout.WEST);
+			pnGiftImage4.add(getPnEastImage4(), BorderLayout.EAST);
 		}
-		return panel_28;
+		return pnGiftImage4;
 	}
 
-	private JPanel getPnNorth4() {
-		if (pnNorth4 == null) {
-			pnNorth4 = new JPanel();
+	private JPanel getPnNorthImage4() {
+		if (pnNorthImage4 == null) {
+			pnNorthImage4 = new JPanel();
 		}
-		return pnNorth4;
+		return pnNorthImage4;
 	}
 
-	private JPanel getPnSouth4() {
-		if (pnSouth4 == null) {
-			pnSouth4 = new JPanel();
+	private JPanel getPnSouthImage4() {
+		if (pnSouthImage4 == null) {
+			pnSouthImage4 = new JPanel();
 		}
-		return pnSouth4;
+		return pnSouthImage4;
 	}
 
-	private JPanel getPnWest4() {
-		if (pnWest4 == null) {
-			pnWest4 = new JPanel();
+	private JPanel getPnWestImage4() {
+		if (pnWestImage4 == null) {
+			pnWestImage4 = new JPanel();
 		}
-		return pnWest4;
+		return pnWestImage4;
 	}
 
-	private JPanel getPnEast4() {
-		if (pnEast4 == null) {
-			pnEast4 = new JPanel();
+	private JPanel getPnEastImage4() {
+		if (pnEastImage4 == null) {
+			pnEastImage4 = new JPanel();
 		}
-		return pnEast4;
+		return pnEastImage4;
 	}
 
 	private JPanel getPnFinish() {
@@ -1801,7 +1824,7 @@ public class MainWindow extends JFrame {
 		if (lblNewLabel == null) {
 			lblNewLabel = new JLabel(
 					"You can get your gifts on the stand next to the terminal");
-			lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 34));
 			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lblNewLabel;
@@ -1817,7 +1840,7 @@ public class MainWindow extends JFrame {
 				}
 			});
 			btnExit6.setBackground(Color.GREEN);
-			btnExit6.setFont(new Font("Tahoma", Font.BOLD, 26));
+			btnExit6.setFont(new Font("Tahoma", Font.BOLD, 40));
 		}
 		return btnExit6;
 	}
@@ -1827,7 +1850,7 @@ public class MainWindow extends JFrame {
 			pnNorth5 = new JPanel();
 			pnNorth5.setLayout(new GridLayout(2, 0, 0, 0));
 			pnNorth5.add(getLblTitle5());
-			pnNorth5.add(getPnCbTravels());
+			pnNorth5.add(getPnCbTravels5());
 		}
 		return pnNorth5;
 	}
@@ -1841,14 +1864,14 @@ public class MainWindow extends JFrame {
 		return lblTitle5;
 	}
 
-	private JPanel getPnCbTravels() {
-		if (pnCbTravels == null) {
-			pnCbTravels = new JPanel();
-			pnCbTravels.add(getLblSelectTravel());
-			pnCbTravels.add(getCbRedeemedTravels());
-			pnCbTravels.add(getBtnAssignDate5());
+	private JPanel getPnCbTravels5() {
+		if (pnCbTravels5 == null) {
+			pnCbTravels5 = new JPanel();
+			pnCbTravels5.add(getLblSelectTravel());
+			pnCbTravels5.add(getCbRedeemedTravels());
+			pnCbTravels5.add(getBtnAssignDate5());
 		}
-		return pnCbTravels;
+		return pnCbTravels5;
 	}
 
 	private JComboBox getCbRedeemedTravels() {
@@ -1861,7 +1884,7 @@ public class MainWindow extends JFrame {
 	private JLabel getLblSelectTravel() {
 		if (lblSelectTravel == null) {
 			lblSelectTravel = new JLabel("Redeemed Travels: ");
-			lblSelectTravel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			lblSelectTravel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
 		return lblSelectTravel;
 	}
@@ -1871,21 +1894,19 @@ public class MainWindow extends JFrame {
 			pnCalendar = new JPanel();
 			pnCalendar.setLayout(new GridLayout(2, 1, 0, 0));
 			pnCalendar.add(getTravelCalendar());
-			pnCalendar.add(getPanel_29());
+			pnCalendar.add(getPnObservations5());
 		}
 		return pnCalendar;
 	}
 
-	private JPanel getPanel_30() {
-		if (panel_30 == null) {
-			panel_30 = new JPanel();
-			FlowLayout flowLayout = (FlowLayout) panel_30.getLayout();
-			flowLayout.setAlignment(FlowLayout.TRAILING);
-			flowLayout.setAlignOnBaseline(true);
-			panel_30.add(getBtnBack5());
-			panel_30.add(getBtnContinue5());
+	private JPanel getPnSouth5() {
+		if (pnSouth5 == null) {
+			pnSouth5 = new JPanel();
+			pnSouth5.setLayout(new GridLayout(0, 2, 0, 0));
+			pnSouth5.add(getBtnBack5());
+			pnSouth5.add(getBtnContinue5());
 		}
-		return panel_30;
+		return pnSouth5;
 	}
 
 	private JButton getBtnBack5() {
@@ -1897,7 +1918,7 @@ public class MainWindow extends JFrame {
 				}
 			});
 			btnBack5.setBackground(Color.RED);
-			btnBack5.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnBack5.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
 		return btnBack5;
 	}
@@ -1905,15 +1926,16 @@ public class MainWindow extends JFrame {
 	private JButton getBtnContinue5() {
 		if (btnContinue5 == null) {
 			btnContinue5 = new JButton("Continue");
+			btnContinue5.setEnabled(false);
 			btnContinue5.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					FileUtil.saveToFile("deliveries", redeemedGifts,
-							travels.getTravels());
+					FileUtil.saveToFile("deliveries", game.getClientLogged(),
+							game.getRedeemedGifts(), travels.getTravels());
 					crd.next(getContentPane());
 				}
 			});
 			btnContinue5.setBackground(Color.GREEN);
-			btnContinue5.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnContinue5.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
 		return btnContinue5;
 	}
@@ -1921,6 +1943,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnAssignDate5() {
 		if (btnAssignDate5 == null) {
 			btnAssignDate5 = new JButton("Assign Date to Selected Travel");
+			btnAssignDate5.setFont(new Font("Tahoma", Font.BOLD, 18));
 			btnAssignDate5.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					Travel t = (Travel) getCbRedeemedTravels()
@@ -1934,7 +1957,13 @@ public class MainWindow extends JFrame {
 							t.setYear(getTravelCalendar().getDate().getYear()
 									+ 1900);
 							t.setObservations(getTxtObservations().getText());
+							t.setDateAssigned(true);
 						}
+					}
+					// Checking if you already set the day for every travel you
+					// get
+					if (allDatesAssigned()) {
+						getBtnContinue5().setEnabled(true);
 					}
 				}
 			});
@@ -1943,14 +1972,23 @@ public class MainWindow extends JFrame {
 		return btnAssignDate5;
 	}
 
-	private JPanel getPanel_29() {
-		if (panel_29 == null) {
-			panel_29 = new JPanel();
-			panel_29.setLayout(new BorderLayout(0, 0));
-			panel_29.add(getLblObservations(), BorderLayout.NORTH);
-			panel_29.add(getTxtObservations());
+	private boolean allDatesAssigned() {
+		for (Travel travel : travels.getTravels()) {
+			if (!travel.isDateAssigned()) {
+				return false;
+			}
 		}
-		return panel_29;
+		return true;
+	}
+
+	private JPanel getPnObservations5() {
+		if (pnObservations5 == null) {
+			pnObservations5 = new JPanel();
+			pnObservations5.setLayout(new BorderLayout(0, 0));
+			pnObservations5.add(getLblObservations(), BorderLayout.NORTH);
+			pnObservations5.add(getTxtObservations());
+		}
+		return pnObservations5;
 	}
 
 	private JTextArea getTxtObservations() {

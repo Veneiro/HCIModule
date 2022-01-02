@@ -57,17 +57,18 @@ public abstract class FileUtil {
 		}
 	}
 
-	public static void saveToFile(String fileName, List<Gift> gifts, List<Travel> travels) {
+	public static void saveToFile(String fileName, String client,
+			List<Gift> gifts, List<Travel> travels) {
 		try {
 			BufferedWriter file = new BufferedWriter(
 					new FileWriter("resources/files/" + fileName + ".dat"));
 			String line = "--- GIFTS ---\n";
 			for (Gift gift : gifts) {
-				line += gift.toString() + "\n";
+				line += client + "@" + gift.toStringFile() + "\n";
 			}
 			String line2 = "--- TRAVELS ---\n";
 			for (Travel travel : travels) {
-				line2 += travel.toStringComplete() + "\n";
+				line2 += client + "@" + travel.toStringComplete() + "\n";
 			}
 			file.write(line);
 			file.write(line2);

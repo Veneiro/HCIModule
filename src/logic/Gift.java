@@ -98,4 +98,8 @@ public class Gift {
 	public String toString() {
 		return getName() + " - " + getPoints();
 	}
+	
+	public String toStringFile() {
+		return getCode();
+	}
 }

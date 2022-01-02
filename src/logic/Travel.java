@@ -3,10 +3,12 @@ package logic;
 public class Travel {
 
 	private String description;
+	private String travelCode;
 	private int day;
 	private int month;
 	private int year;
 	private String observations;
+	private boolean dateAssigned = false;
 
 	/**
 	 * @param description
@@ -14,14 +16,43 @@ public class Travel {
 	 * @param month
 	 * @param year
 	 */
-	public Travel(String description, int day, int month, int year,
-			String observations) {
+	public Travel(String description, String travelCode, int day, int month,
+			int year, String observations) {
 		super();
 		this.description = description;
+		this.travelCode = travelCode;
 		this.day = day;
 		this.month = month;
 		this.year = year;
 		this.observations = observations;
+	}
+
+	/**
+	 * @return the travelCode
+	 */
+	public String getTravelCode() {
+		return travelCode;
+	}
+
+	/**
+	 * @param travelCode the travelCode to set
+	 */
+	public void setTravelCode(String travelCode) {
+		this.travelCode = travelCode;
+	}
+
+	/**
+	 * @return the dateAssigned
+	 */
+	public boolean isDateAssigned() {
+		return dateAssigned;
+	}
+
+	/**
+	 * @param dateAssigned the dateAssigned to set
+	 */
+	public void setDateAssigned(boolean dateAssigned) {
+		this.dateAssigned = dateAssigned;
 	}
 
 	/**
@@ -100,7 +131,7 @@ public class Travel {
 	}
 
 	public String toStringComplete() {
-		return day + "/" + month + "/" + year + " - " + description + " - "
-				+ "Observations: " + observations;
+		return getTravelCode() + "@" + day + "/" + month + "/" + year + "@"
+				+ observations;
 	}
 }
