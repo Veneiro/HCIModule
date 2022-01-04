@@ -7,6 +7,7 @@
   <indexitem text="description of the gift panel" target="intro" />
   <indexitem text="how to introduce my code" target="clientcode" />
   <indexitem text="how to play the game" target="howtoplay" />
+  <indexitem text="changing letter size" target="lettersize" />
   <indexitem text="rewards">
         <indexitem text="how to select my rewards" target="getyourrewards" />
         <indexitem text="travel date selection" target="traveldate" />

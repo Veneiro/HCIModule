@@ -8,6 +8,7 @@
 <mapID target="intro" url="Sources/Introduction.html" />
 <mapID target="clientcode" url="Sources/ClientCode.html" />
 <mapID target="howtoplay" url="Sources/HowToPlay.html" />
+<mapID target="lettersize" url="Sources/LetterSize.html" />
 <mapID target="getyourrewards" url="Sources/GetYourRewards.html" />
 <mapID target="traveldate" url="Sources/TravelDate.html" />
 </map>

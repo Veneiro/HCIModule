@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -17,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
@@ -55,8 +56,6 @@ import logic.Travels;
 import logic.comparators.ByPointsComparator;
 import logic.comparators.BySecctionComparator;
 import logic.util.FileUtil;
-
-import javax.swing.JTextArea;
 
 @SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 public class MainWindow extends JFrame {
@@ -102,15 +101,38 @@ public class MainWindow extends JFrame {
 	private JPanel pnTitle_Size2;
 	private JPanel pnSize2;
 	private JPanel pnSizeLabel_2;
-
-	private JLabel lblChangeSize_2;
-
 	private JPanel pnSizeSlider_2;
 	private JPanel pnNorthGapSizeSlider;
 	private JPanel pnNorth3;
 	private JPanel pnSizeLabel_3;
 	private JPanel pnSizeSlider_3;
 	private JPanel pnNorthGapSizeSlider3;
+	private JPanel pnEast3;
+	private JPanel pnSouth3;
+	private JPanel pnBoxes;
+	private JPanel pnNorth4;
+	private JPanel pnSizeLabel_4;
+	private JPanel pnSizeSlider_4;
+	private JPanel pnNorthGapSizeSlider4;
+	private JPanel pnCenter4;
+	private JPanel pnImportantInfo4;
+	private JPanel pnLists4;
+	private JScrollPane sPnRedeemedGifts4;
+	private JPanel pnFilters4;
+	private JPanel pnComboGifts4;
+	private JPanel pnFiltersPoints4;
+	private JPanel pnPoints4;
+	private JPanel pnGiftImage4;
+	private JPanel pnNorthImage4;
+	private JPanel pnSouthImage4;
+	private JPanel pnWestImage4;
+	private JPanel pnEastImage4;
+	private JPanel pnFinish;
+	private JPanel pnNorth5;
+	private JPanel pnCbTravels5;
+	private JPanel pnCalendar;
+	private JPanel pnSouth5;
+	private JPanel pnObservations5;
 
 	// LABELS
 	private JLabel lblTitle;
@@ -119,60 +141,65 @@ public class MainWindow extends JFrame {
 	private JLabel lblTitleLoyalty;
 	private JLabel lblSubtitleLoyalty;
 	private JLabel lblIntroduceCode;
+	private JLabel lblChangeSize_2;
+	private JLabel lblTitle3;
+	private JLabel lblSelectYourGifts4;
+	private JLabel lblImage;
+	private JLabel lblCategory4;
+	private JLabel lblOrder4;
+	private JLabel lblRemainingPoints4;
+	private JLabel lblPointsCount;
+	private JLabel lblGifts;
+	private JLabel lblRedeemedGifts4;
+	private JLabel lblTitle6;
+	private JLabel lblNewLabel;
+	private JLabel lblTitle5;
+	private JLabel lblSelectTravel;
+	private JLabel lblObservations;
 
 	// TEXTFIELDS
 	private JTextField txtCode;
+	private JTextField txtSearch;
 
 	// BUTTONS
 	private JButton btnContinue2;
 	private JButton btnBack2;
 	private JButton btnHelp;
 	private JButton btnContinue;
+	private JButton btnContinue3;
+	private JButton btnBack3;
+	private JButton btnHelp3;
+	private JButton btnContinue4;
+	private JButton btnAdd4;
+	private JButton btnRemove4;
+	private JButton btnExit6;
+	private JButton btnBack5;
+	private JButton btnContinue5;
+	private JButton btnAssignDate5;
 
 	// SLIDERS
 	private JSlider slResize;
 	private JSlider slResize_2;
 	private JSlider slResize_3;
+	private JSlider slResize_4;
 
 	// LAYOUT
 	private CardLayout crd;
 
-	private JLabel lblTitle3;
-	private JPanel pnEast3;
-	private JButton btnContinue3;
-	private JButton btnBack3;
-	private JPanel pnSouth3;
-	private JButton btnHelp3;
-	private JPanel pnBoxes;
-	private JPanel pnNorth4;
-	private JPanel pnSizeLabel_4;
-	private JLabel lblSelectYourGifts4;
-	private JPanel pnSizeSlider_4;
-	private JPanel panel_193_1;
-	private JSlider slResize_4;
-	private JPanel pnCenter4;
-	private JPanel pnImportantInfo4;
-	private JPanel pnLists4;
-	private JScrollPane sPnRedeemedGifts4;
+	// LISTS
 	private JList RedeemedGiftList;
-	private JLabel lblImage;
-	private JButton btnContinue4;
-	private JPanel pnFilters4;
-	private JPanel pnComboGifts4;
-	private JLabel lblCategory4;
+
+	// COMBOBOXES
 	private JComboBox cbCategory;
-	private JLabel lblOrder4;
 	private JComboBox cbOrder;
-	private JTextField txtSearch;
-	private JPanel pnFiltersPoints4;
-	private JPanel pnPoints4;
-	private JLabel lblRemainingPoints4;
-	private JLabel lblPointsCount;
-	private JLabel lblGifts;
 	private JComboBox cbGifts;
-	private JButton btnAdd4;
-	private JButton btnRemove4;
-	private JLabel lblRedeemedGifts4;
+	private JComboBox cbRedeemedTravels;
+
+	// CALENDAR
+	private JCalendar travelCalendar;
+
+	// TEXT AREA
+	private JTextArea txtObservations;
 
 	// LOGIC CLASSES
 	private Game game = new Game(0, 3);
@@ -185,30 +212,6 @@ public class MainWindow extends JFrame {
 	private DefaultListModel dlmGifts = new DefaultListModel();
 	private MyButtonListener mbl = new MyButtonListener();
 	private DefaultComboBoxModel<Travel> dcbTravelmodel = new DefaultComboBoxModel<Travel>();
-
-	private JPanel pnGiftImage4;
-	private JPanel pnNorthImage4;
-	private JPanel pnSouthImage4;
-	private JPanel pnWestImage4;
-	private JPanel pnEastImage4;
-	private JPanel pnFinish;
-	private JLabel lblTitle6;
-	private JLabel lblNewLabel;
-	private JButton btnExit6;
-	private JCalendar travelCalendar;
-	private JPanel pnNorth5;
-	private JLabel lblTitle5;
-	private JPanel pnCbTravels5;
-	private JComboBox cbRedeemedTravels;
-	private JLabel lblSelectTravel;
-	private JPanel pnCalendar;
-	private JPanel pnSouth5;
-	private JButton btnBack5;
-	private JButton btnContinue5;
-	private JButton btnAssignDate5;
-	private JPanel pnObservations5;
-	private JTextArea txtObservations;
-	private JLabel lblObservations;
 
 	/**
 	 * Create the frame.
@@ -231,6 +234,8 @@ public class MainWindow extends JFrame {
 		contentPane.add(getPnSelectYourGifts(), "pn4");
 		contentPane.add(getPnTravelSelect(), "pn5");
 		contentPane.add(getPnFinish(), "pn6");
+
+		getPnMainWindow().getRootPane().setDefaultButton(getBtnContinue());
 		loadHelp();
 	}
 
@@ -259,6 +264,10 @@ public class MainWindow extends JFrame {
 		hb.enableHelpKey(getRootPane(), "intro", hs);
 		hb.enableHelpOnButton(getBtnHelp3(), "howtoplay", hs);
 		hb.enableHelpOnButton(getBtnHelp(), "intro", hs);
+		hb.enableHelp(getPnSizeSlider(), "lettersize", hs);
+		hb.enableHelp(getPnSizeSlider_2(), "lettersize", hs);
+		hb.enableHelp(getPnSizeSlider_3(), "lettersize", hs);
+		hb.enableHelp(getPnSizeSlider_4(), "lettersize", hs);
 	}
 
 	private JPanel getPnMainContent() {
@@ -306,6 +315,9 @@ public class MainWindow extends JFrame {
 					crd.next(getContentPane());
 					getTxtCode().grabFocus();
 					setTitle("Loyalty Code : Gifts Panel");
+					getPnLoyaltyCode().getRootPane()
+							.setDefaultButton(getBtnContinue2());
+
 				}
 			});
 			btnContinue.setForeground(new Color(255, 255, 255));
@@ -520,6 +532,7 @@ public class MainWindow extends JFrame {
 	private JCalendar getTravelCalendar() {
 		if (travelCalendar == null) {
 			travelCalendar = new JCalendar();
+			travelCalendar.setToolTipText("Select the date for your travel");
 		}
 		return travelCalendar;
 	}
@@ -638,6 +651,7 @@ public class MainWindow extends JFrame {
 	private JTextField getTxtCode() {
 		if (txtCode == null) {
 			txtCode = new JTextField();
+			txtCode.setToolTipText("Introduce here your client code");
 			txtCode.setText("MFL137");
 			txtCode.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			txtCode.setColumns(10);
@@ -648,6 +662,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnContinue2() {
 		if (btnContinue2 == null) {
 			btnContinue2 = new JButton("CONTINUE");
+			btnContinue2.setToolTipText("Continue to the game board");
 			btnContinue2.setBackground(Color.GREEN);
 			btnContinue2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			btnContinue2.addActionListener(new ActionListener() {
@@ -656,6 +671,8 @@ public class MainWindow extends JFrame {
 						game.setClientLogged(getTxtCode().getText());
 						crd.next(getContentPane());
 						setTitle("Board : Gifts Panel");
+						getPnGiftsBoard().getRootPane()
+								.setDefaultButton(getBtnContinue3());
 					} else {
 						JOptionPane.showMessageDialog(rootPane,
 								"Your Client ID is not in the Data Base or is "
@@ -715,6 +732,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnBack2() {
 		if (btnBack2 == null) {
 			btnBack2 = new JButton("BACK");
+			btnBack2.setToolTipText("Go to the previous window");
 			btnBack2.setBackground(Color.RED);
 			btnBack2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			btnBack2.addActionListener(new ActionListener() {
@@ -810,6 +828,8 @@ public class MainWindow extends JFrame {
 	private JSlider getSlResize_2() {
 		if (slResize_2 == null) {
 			slResize_2 = new JSlider();
+			slResize_2.setToolTipText(
+					"Move the slider and set the size of the texts in the screen to the ones you want");
 			slResize_2.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
 					if (slResize_2.getValue() < 38) {
@@ -881,6 +901,8 @@ public class MainWindow extends JFrame {
 	private JPanel getPnSizeSlider_3() {
 		if (pnSizeSlider_3 == null) {
 			pnSizeSlider_3 = new JPanel();
+			pnSizeSlider_3.setToolTipText(
+					"Move the slider and set the size of the texts in the screen to the ones you want");
 			pnSizeSlider_3.setLayout(new GridLayout(3, 1, 0, 0));
 			pnSizeSlider_3.add(getPnNorthGapSizeSlider3());
 			pnSizeSlider_3.add(getSlResize_3());
@@ -898,6 +920,8 @@ public class MainWindow extends JFrame {
 	private JSlider getSlResize_3() {
 		if (slResize_3 == null) {
 			slResize_3 = new JSlider();
+			slResize_3.setToolTipText(
+					"Move the slider and set the size of the texts in the screen to the ones you want");
 			slResize_3.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
 					if (slResize_3.getValue() < 2) {
@@ -937,6 +961,8 @@ public class MainWindow extends JFrame {
 	private JButton getBtnContinue3() {
 		if (btnContinue3 == null) {
 			btnContinue3 = new JButton("CONTINUE");
+			btnContinue3
+					.setToolTipText("Continue and redeem your prefered gifts");
 			btnContinue3.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (game.getRemainingPoints() == 0) {
@@ -945,10 +971,14 @@ public class MainWindow extends JFrame {
 								+ "time! The app will reset");
 						close();
 						reinitializate();
+						getPnMainWindow().getRootPane()
+								.setDefaultButton(getBtnContinue());
 					} else {
 						crd.next(getContentPane());
-						adaptImage(getLblImage(), "/img/gift.png");
+						adaptImageLabel(getLblImage(), "/img/gift.png");
 						setTitle("Redeem your Gifts : Gifts Panel");
+						getPnSelectYourGifts().getRootPane()
+								.setDefaultButton(getBtnContinue4());
 					}
 				}
 			});
@@ -966,6 +996,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnBack3() {
 		if (btnBack3 == null) {
 			btnBack3 = new JButton("BACK");
+			btnBack3.setToolTipText("Go to the previous window");
 			btnBack3.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					crd.previous(getContentPane());
@@ -989,6 +1020,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnHelp3() {
 		if (btnHelp3 == null) {
 			btnHelp3 = new JButton("IT'S YOUR FIRST TIME? CLICK HERE");
+			btnHelp3.setToolTipText("Get some help to play the game");
 			btnHelp3.setFont(new Font("Tahoma", Font.BOLD, 20));
 		}
 		return btnHelp3;
@@ -1213,22 +1245,24 @@ public class MainWindow extends JFrame {
 		if (pnSizeSlider_4 == null) {
 			pnSizeSlider_4 = new JPanel();
 			pnSizeSlider_4.setLayout(new GridLayout(3, 1, 0, 0));
-			pnSizeSlider_4.add(getPanel_193_1());
+			pnSizeSlider_4.add(getPnNorthGapSizeSlider4());
 			pnSizeSlider_4.add(getSlResize_4());
 		}
 		return pnSizeSlider_4;
 	}
 
-	private JPanel getPanel_193_1() {
-		if (panel_193_1 == null) {
-			panel_193_1 = new JPanel();
+	private JPanel getPnNorthGapSizeSlider4() {
+		if (pnNorthGapSizeSlider4 == null) {
+			pnNorthGapSizeSlider4 = new JPanel();
 		}
-		return panel_193_1;
+		return pnNorthGapSizeSlider4;
 	}
 
 	private JSlider getSlResize_4() {
 		if (slResize_4 == null) {
 			slResize_4 = new JSlider();
+			slResize_4.setToolTipText(
+					"Move the slider and set the size of the texts in the screen to the ones you want");
 			slResize_4.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
 
@@ -1356,6 +1390,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnContinue4() {
 		if (btnContinue4 == null) {
 			btnContinue4 = new JButton("CONTINUE");
+			btnContinue4.setToolTipText("Continue to the next window");
 			btnContinue4.setBackground(Color.GREEN);
 			btnContinue4.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -1393,12 +1428,16 @@ public class MainWindow extends JFrame {
 										game.getRedeemedGifts(),
 										travels.getTravels());
 								crd.show(getContentPane(), "pn6");
+								getPnFinish().getRootPane()
+										.setDefaultButton(getBtnExit6());
 							} else {
 								for (Travel t : travels.getTravels()) {
 									dcbTravelmodel.addElement(t);
 								}
 								cbRedeemedTravels.setModel(dcbTravelmodel);
 								crd.show(getContentPane(), "pn5");
+								getPnTravelSelect().getRootPane()
+										.setDefaultButton(getBtnContinue5());
 							}
 							break;
 						}
@@ -1475,6 +1514,7 @@ public class MainWindow extends JFrame {
 	private JComboBox getCbCategory() {
 		if (cbCategory == null) {
 			cbCategory = new JComboBox();
+			cbCategory.setToolTipText("Show the products of only one category");
 			cbCategory.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					getCbOrder().setSelectedIndex(0);
@@ -1563,6 +1603,7 @@ public class MainWindow extends JFrame {
 	private JComboBox getCbOrder() {
 		if (cbOrder == null) {
 			cbOrder = new JComboBox();
+			cbOrder.setToolTipText("Order the products");
 			cbOrder.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// Initializate all necessary fields
@@ -1651,7 +1692,7 @@ public class MainWindow extends JFrame {
 		return lblGifts;
 	}
 
-	private void adaptImage(JLabel label, String imagePath) {
+	private void adaptImageLabel(JLabel label, String imagePath) {
 		ImageIcon tmpImagen = new ImageIcon(getClass().getResource(imagePath));
 		float delta = ((label.getWidth() * 100) / tmpImagen.getIconWidth())
 				/ 100f;
@@ -1675,14 +1716,15 @@ public class MainWindow extends JFrame {
 							getBtnAdd4().setEnabled(true);
 							String code = ((Gift) getCbGifts()
 									.getSelectedItem()).getCode();
-							adaptImage(getLblImage(), "/img/" + code + ".png");
+							adaptImageLabel(getLblImage(),
+									"/img/" + code + ".png");
 						} else {
 							getBtnAdd4().setEnabled(false);
-							adaptImage(getLblImage(), "/img/gift.png");
+							adaptImageLabel(getLblImage(), "/img/gift.png");
 						}
 					} catch (NullPointerException exception) {
 						getBtnAdd4().setEnabled(false);
-						adaptImage(getLblImage(), "/img/gift.png");
+						adaptImageLabel(getLblImage(), "/img/gift.png");
 					}
 				}
 			});
@@ -1698,6 +1740,8 @@ public class MainWindow extends JFrame {
 	private JButton getBtnAdd4() {
 		if (btnAdd4 == null) {
 			btnAdd4 = new JButton("ADD");
+			btnAdd4.setToolTipText("Add the selected gift to the list");
+			btnAdd4.setMnemonic('A');
 			btnAdd4.setEnabled(false);
 			btnAdd4.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -1722,6 +1766,8 @@ public class MainWindow extends JFrame {
 	private JButton getBtnRemove4() {
 		if (btnRemove4 == null) {
 			btnRemove4 = new JButton("REMOVE");
+			btnRemove4.setToolTipText("Remove the selected gift on the list");
+			btnRemove4.setMnemonic('R');
 			btnRemove4.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (getRedeemedGiftList().getSelectedValue() != null) {
@@ -1833,10 +1879,13 @@ public class MainWindow extends JFrame {
 	private JButton getBtnExit6() {
 		if (btnExit6 == null) {
 			btnExit6 = new JButton("EXIT");
+			btnExit6.setToolTipText("Exit and claim your gifts");
 			btnExit6.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					close();
 					reinitializate();
+					getPnMainWindow().getRootPane()
+							.setDefaultButton(getBtnContinue());
 				}
 			});
 			btnExit6.setBackground(Color.GREEN);
@@ -1912,6 +1961,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnBack5() {
 		if (btnBack5 == null) {
 			btnBack5 = new JButton("Go Back");
+			btnBack5.setToolTipText("Go to the previous window");
 			btnBack5.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					crd.previous(getContentPane());
@@ -1926,12 +1976,14 @@ public class MainWindow extends JFrame {
 	private JButton getBtnContinue5() {
 		if (btnContinue5 == null) {
 			btnContinue5 = new JButton("Continue");
+			btnContinue5.setToolTipText("Continue and redeem your gifts");
 			btnContinue5.setEnabled(false);
 			btnContinue5.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					FileUtil.saveToFile("deliveries", game.getClientLogged(),
 							game.getRedeemedGifts(), travels.getTravels());
 					crd.next(getContentPane());
+					getPnFinish().getRootPane().setDefaultButton(getBtnExit6());
 				}
 			});
 			btnContinue5.setBackground(Color.GREEN);
@@ -1943,6 +1995,10 @@ public class MainWindow extends JFrame {
 	private JButton getBtnAssignDate5() {
 		if (btnAssignDate5 == null) {
 			btnAssignDate5 = new JButton("Assign Date to Selected Travel");
+			btnAssignDate5.setMnemonic('A');
+			btnAssignDate5.setToolTipText(
+					"Click here to assing the selected date to the "
+					+ "selected travel");
 			btnAssignDate5.setFont(new Font("Tahoma", Font.BOLD, 18));
 			btnAssignDate5.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -1950,14 +2006,25 @@ public class MainWindow extends JFrame {
 							.getSelectedItem();
 					for (Travel travel : travels.getTravels()) {
 						if (travel.equals(t)) {
-							t.setDay(getTravelCalendar().getDayChooser()
-									.getDay());
-							t.setMonth(getTravelCalendar().getDate().getMonth()
-									+ 1);
-							t.setYear(getTravelCalendar().getDate().getYear()
-									+ 1900);
-							t.setObservations(getTxtObservations().getText());
-							t.setDateAssigned(true);
+
+							if (!getTravelCalendar().getDate()
+									.before(new Date())) {
+								t.setDay(getTravelCalendar().getDayChooser()
+										.getDay());
+								t.setMonth(
+										getTravelCalendar().getDate().getMonth()
+												+ 1);
+								t.setYear(
+										getTravelCalendar().getDate().getYear()
+												+ 1900);
+								t.setObservations(
+										getTxtObservations().getText());
+								t.setDateAssigned(true);
+							} else {
+								JOptionPane.showMessageDialog(rootPane,
+										"The selected date is not valid, "
+										+ "please select a valid date");
+							}
 						}
 					}
 					// Checking if you already set the day for every travel you
@@ -1994,6 +2061,7 @@ public class MainWindow extends JFrame {
 	private JTextArea getTxtObservations() {
 		if (txtObservations == null) {
 			txtObservations = new JTextArea();
+			txtObservations.setToolTipText("Make comments for your travel");
 		}
 		return txtObservations;
 	}
