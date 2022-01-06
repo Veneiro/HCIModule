@@ -18,7 +18,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
@@ -94,10 +96,9 @@ public class MainWindow extends JFrame {
 	private JPanel pnTextAreaCode2;
 	private JPanel pnWestGapCode2;
 	private JPanel pnEastGapCode2;
-	private JPanel pnBack2;
+	private JPanel pnButtons2;
 	private JPanel pnBackButton2;
 	private JPanel pnSouthGapBack2;
-	private JPanel pnNorthGapBack2;
 	private JPanel pnTitle_Size2;
 	private JPanel pnSize2;
 	private JPanel pnSizeLabel_2;
@@ -133,6 +134,7 @@ public class MainWindow extends JFrame {
 	private JPanel pnCalendar;
 	private JPanel pnSouth5;
 	private JPanel pnObservations5;
+	private JPanel pnTitle5;
 
 	// LABELS
 	private JLabel lblTitle;
@@ -152,7 +154,7 @@ public class MainWindow extends JFrame {
 	private JLabel lblGifts;
 	private JLabel lblRedeemedGifts4;
 	private JLabel lblTitle6;
-	private JLabel lblNewLabel;
+	private JLabel lblSubtitle6;
 	private JLabel lblTitle5;
 	private JLabel lblSelectTravel;
 	private JLabel lblObservations;
@@ -182,6 +184,7 @@ public class MainWindow extends JFrame {
 	private JSlider slResize_2;
 	private JSlider slResize_3;
 	private JSlider slResize_4;
+	private JSlider slResize_5;
 
 	// LAYOUT
 	private CardLayout crd;
@@ -207,11 +210,18 @@ public class MainWindow extends JFrame {
 	private Gifts gf = new Gifts();
 	private Travels travels = new Travels();
 	private LocalDateTime ldt = LocalDateTime.now();
+	private ResourceBundle texts;
 
 	private DefaultComboBoxModel dcbgiftm = new DefaultComboBoxModel();
 	private DefaultListModel dlmGifts = new DefaultListModel();
 	private MyButtonListener mbl = new MyButtonListener();
 	private DefaultComboBoxModel<Travel> dcbTravelmodel = new DefaultComboBoxModel<Travel>();
+	private JPanel pnHelpLang;
+	private JButton btnEnglish;
+	private JButton btnSpanish;
+	private JPanel pnContinueButton2;
+	private JPanel pnNorthGapButtons2;
+	private JPanel pnSouthGapContinue2;
 
 	/**
 	 * Create the frame.
@@ -237,6 +247,7 @@ public class MainWindow extends JFrame {
 
 		getPnMainWindow().getRootPane().setDefaultButton(getBtnContinue());
 		loadHelp();
+		localize(new Locale("en"));
 	}
 
 	private void reinitializate() {
@@ -270,6 +281,53 @@ public class MainWindow extends JFrame {
 		hb.enableHelp(getPnSizeSlider_4(), "lettersize", hs);
 	}
 
+	private void localize(Locale localization) {
+
+		texts = ResourceBundle.getBundle("rcs/messages", localization);
+
+		getLblChangeSize().setText(texts.getString("lblSize12"));
+		getLblTitle().setText(texts.getString("lblTitle1"));
+		getLblContinue().setText(texts.getString("lblSubtitle1"));
+		getBtnContinue().setText(texts.getString("buttonContinue1"));
+		getBtnHelp().setText(texts.getString("buttonHelp1"));
+
+		getLblTitleLoyalty().setText(texts.getString("lblTitle2"));
+		getLblChangeSize_2().setText(texts.getString("lblSize12"));
+		getLblSubtitleLoyalty().setText(texts.getString("lblSubtitle2"));
+		getLblIntroduceCode().setText(texts.getString("lblCodeTitle"));
+		getBtnContinue2().setText(texts.getString("buttonContinue2345"));
+		getBtnBack2().setText(texts.getString("buttonBack235"));
+
+		getLblTitle3().setText(texts.getString("lblTitle3"));
+		getBtnHelp3().setText(texts.getString("buttonHelp3"));
+		getBtnContinue3().setText(texts.getString("buttonContinue2345"));
+		getBtnBack3().setText(texts.getString("buttonBack235"));
+
+		getLblSelectYourGifts4().setText(texts.getString("lblTitle4"));
+		getLblRemainingPoints4()
+				.setText(texts.getString("lblRemainingPointsTitle4"));
+		getLblGifts().setText(texts.getString("lblGiftsTitle4"));
+		getBtnAdd4().setText(texts.getString("buttonAdd4"));
+		getBtnRemove4().setText(texts.getString("buttonRemove4"));
+		getLblCategory4().setText(texts.getString("lblCategory4"));
+		getLblOrder4().setText(texts.getString("lblOrder4"));
+		getLblRedeemedGifts4()
+				.setText(texts.getString("lblRedeemedGiftsTitle4"));
+		getBtnContinue4().setText(texts.getString("buttonContinue2345"));
+
+		getLblTitle5().setText(texts.getString("lblTitle5"));
+		getLblSelectTravel()
+				.setText(texts.getString("lblRedeemedTravelsTitle5"));
+		getBtnAssignDate5().setText(texts.getString("buttonAssignDate"));
+		getLblObservations().setText(texts.getString("lblObservations"));
+		getBtnContinue5().setText(texts.getString("buttonContinue2345"));
+		getBtnBack5().setText(texts.getString("buttonBack235"));
+		
+		getLblTitle6().setText(texts.getString("lblTitle6"));
+		getLblSubtitle6().setText(texts.getString("lblSubtitle6"));
+		getBtnExit6().setText(texts.getString("buttonExit6"));
+	}
+
 	private JPanel getPnMainContent() {
 		if (pnMainContent == null) {
 			pnMainContent = new JPanel();
@@ -298,10 +356,10 @@ public class MainWindow extends JFrame {
 		if (pnHelp == null) {
 			pnHelp = new JPanel();
 			pnHelp.setLayout(new BorderLayout(0, 0));
-			pnHelp.add(getBtnHelp());
 			pnHelp.add(getPnWestGapHelp(), BorderLayout.WEST);
 			pnHelp.add(getPnEastGapHelp(), BorderLayout.EAST);
 			pnHelp.add(getPnSouthGapHelp(), BorderLayout.SOUTH);
+			pnHelp.add(getPnHelpLang(), BorderLayout.CENTER);
 		}
 		return pnHelp;
 	}
@@ -572,8 +630,8 @@ public class MainWindow extends JFrame {
 		if (pnBottom2 == null) {
 			pnBottom2 = new JPanel();
 			pnBottom2.setLayout(new GridLayout(2, 0, 0, 0));
-			pnBottom2.add(getBtnContinue2());
-			pnBottom2.add(getPnBack2());
+			pnBottom2.add(getPnNorthGapButtons2());
+			pnBottom2.add(getPnButtons2());
 		}
 		return pnBottom2;
 	}
@@ -719,14 +777,14 @@ public class MainWindow extends JFrame {
 		return pnEastGapCode2;
 	}
 
-	private JPanel getPnBack2() {
-		if (pnBack2 == null) {
-			pnBack2 = new JPanel();
-			pnBack2.setLayout(new GridLayout(2, 3, 0, 0));
-			pnBack2.add(getPnNorthGapBack2());
-			pnBack2.add(getPnBackButton2());
+	private JPanel getPnButtons2() {
+		if (pnButtons2 == null) {
+			pnButtons2 = new JPanel();
+			pnButtons2.setLayout(new GridLayout(0, 2, 0, 0));
+			pnButtons2.add(getPnBackButton2());
+			pnButtons2.add(getPnContinueButton2());
 		}
-		return pnBack2;
+		return pnButtons2;
 	}
 
 	private JButton getBtnBack2() {
@@ -748,8 +806,8 @@ public class MainWindow extends JFrame {
 		if (pnBackButton2 == null) {
 			pnBackButton2 = new JPanel();
 			pnBackButton2.setLayout(new BorderLayout(0, 0));
-			pnBackButton2.add(getBtnBack2());
 			pnBackButton2.add(getPnSouthGapBack2(), BorderLayout.SOUTH);
+			pnBackButton2.add(getBtnBack2(), BorderLayout.CENTER);
 		}
 		return pnBackButton2;
 	}
@@ -759,14 +817,6 @@ public class MainWindow extends JFrame {
 			pnSouthGapBack2 = new JPanel();
 		}
 		return pnSouthGapBack2;
-	}
-
-	private JPanel getPnNorthGapBack2() {
-		if (pnNorthGapBack2 == null) {
-			pnNorthGapBack2 = new JPanel();
-			pnNorthGapBack2.setLayout(new GridLayout(1, 0, 0, 0));
-		}
-		return pnNorthGapBack2;
 	}
 
 	private JPanel getPnTitle_Size2() {
@@ -848,7 +898,7 @@ public class MainWindow extends JFrame {
 						getLblIntroduceCode().setFont(new Font("Tahoma",
 								Font.PLAIN, 22 + slResize_2.getValue()));
 					}
-					if (slResize_2.getValue() < 30) {
+					if (slResize_2.getValue() < 60) {
 						getBtnBack2().setFont(new Font("Tahoma", Font.PLAIN,
 								18 + slResize_2.getValue()));
 					}
@@ -1851,7 +1901,7 @@ public class MainWindow extends JFrame {
 			pnFinish = new JPanel();
 			pnFinish.setLayout(new BorderLayout(0, 0));
 			pnFinish.add(getLblTitle6(), BorderLayout.NORTH);
-			pnFinish.add(getLblNewLabel(), BorderLayout.CENTER);
+			pnFinish.add(getLblSubtitle6(), BorderLayout.CENTER);
 			pnFinish.add(getBtnExit6(), BorderLayout.SOUTH);
 		}
 		return pnFinish;
@@ -1866,14 +1916,14 @@ public class MainWindow extends JFrame {
 		return lblTitle6;
 	}
 
-	private JLabel getLblNewLabel() {
-		if (lblNewLabel == null) {
-			lblNewLabel = new JLabel(
+	private JLabel getLblSubtitle6() {
+		if (lblSubtitle6 == null) {
+			lblSubtitle6 = new JLabel(
 					"You can get your gifts on the stand next to the terminal");
-			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 34));
-			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			lblSubtitle6.setFont(new Font("Tahoma", Font.BOLD, 34));
+			lblSubtitle6.setHorizontalAlignment(SwingConstants.CENTER);
 		}
-		return lblNewLabel;
+		return lblSubtitle6;
 	}
 
 	private JButton getBtnExit6() {
@@ -1898,7 +1948,7 @@ public class MainWindow extends JFrame {
 		if (pnNorth5 == null) {
 			pnNorth5 = new JPanel();
 			pnNorth5.setLayout(new GridLayout(2, 0, 0, 0));
-			pnNorth5.add(getLblTitle5());
+			pnNorth5.add(getPnTitle5());
 			pnNorth5.add(getPnCbTravels5());
 		}
 		return pnNorth5;
@@ -1998,7 +2048,7 @@ public class MainWindow extends JFrame {
 			btnAssignDate5.setMnemonic('A');
 			btnAssignDate5.setToolTipText(
 					"Click here to assing the selected date to the "
-					+ "selected travel");
+							+ "selected travel");
 			btnAssignDate5.setFont(new Font("Tahoma", Font.BOLD, 18));
 			btnAssignDate5.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -2023,7 +2073,7 @@ public class MainWindow extends JFrame {
 							} else {
 								JOptionPane.showMessageDialog(rootPane,
 										"The selected date is not valid, "
-										+ "please select a valid date");
+												+ "please select a valid date");
 							}
 						}
 					}
@@ -2071,5 +2121,118 @@ public class MainWindow extends JFrame {
 			lblObservations = new JLabel("    Observations:");
 		}
 		return lblObservations;
+	}
+
+	private JSlider getSlResize_5() {
+		if (slResize_5 == null) {
+			slResize_5 = new JSlider();
+			slResize_5.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					if (slResize_5.getValue() < 16) {
+						getLblTitle5().setFont(new Font("Tahoma", Font.BOLD,
+								20 + slResize_5.getValue()));
+					}
+					if (slResize_5.getValue() < 13) {
+						getLblSelectTravel().setFont(new Font("Tahoma",
+								Font.PLAIN, 18 + slResize_5.getValue()));
+					}
+					if (slResize_5.getValue() < 13) {
+						getBtnAssignDate5().setFont(new Font("Tahoma",
+								Font.BOLD, 18 + slResize_5.getValue()));
+					}
+					if (slResize_5.getValue() < 34) {
+						getLblObservations().setFont(new Font("Tahoma",
+								Font.PLAIN, 11 + slResize_5.getValue()));
+					}
+					if (slResize_5.getValue() < 34) {
+						getBtnBack5().setFont(new Font("Tahoma", Font.PLAIN,
+								18 + slResize_5.getValue()));
+					}
+					if (slResize_5.getValue() < 34) {
+						getBtnContinue5().setFont(new Font("Tahoma", Font.PLAIN,
+								18 + slResize_5.getValue()));
+					}
+					if (slResize_5.getValue() < 12) {
+						getCbRedeemedTravels().setFont(new Font("Tahoma",
+								Font.PLAIN, 11 + slResize_5.getValue()));
+					}
+				}
+			});
+			slResize_5.setValue(0);
+			slResize_5.setToolTipText("Move the slider and set the size of the "
+					+ "texts in the screen to the ones you want");
+			slResize_5.setMaximum(35);
+		}
+		return slResize_5;
+	}
+
+	private JPanel getPnTitle5() {
+		if (pnTitle5 == null) {
+			pnTitle5 = new JPanel();
+			pnTitle5.setLayout(new GridLayout(0, 2, 0, 0));
+			pnTitle5.add(getLblTitle5());
+			pnTitle5.add(getSlResize_5());
+		}
+		return pnTitle5;
+	}
+
+	private JPanel getPnHelpLang() {
+		if (pnHelpLang == null) {
+			pnHelpLang = new JPanel();
+			pnHelpLang.setLayout(new GridLayout(0, 3, 0, 0));
+			pnHelpLang.add(getBtnEnglish());
+			pnHelpLang.add(getBtnHelp());
+			pnHelpLang.add(getBtnSpanish());
+		}
+		return pnHelpLang;
+	}
+
+	private JButton getBtnEnglish() {
+		if (btnEnglish == null) {
+			btnEnglish = new JButton("");
+			btnEnglish.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					localize(new Locale("en"));
+				}
+			});
+			btnEnglish.setIcon(
+					new ImageIcon(MainWindow.class.getResource("/img/uk.png")));
+		}
+		return btnEnglish;
+	}
+
+	private JButton getBtnSpanish() {
+		if (btnSpanish == null) {
+			btnSpanish = new JButton("");
+			btnSpanish.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					localize(new Locale("es"));
+				}
+			});
+			btnSpanish.setIcon(new ImageIcon(
+					MainWindow.class.getResource("/img/spain.png")));
+		}
+		return btnSpanish;
+	}
+	private JPanel getPnContinueButton2() {
+		if (pnContinueButton2 == null) {
+			pnContinueButton2 = new JPanel();
+			pnContinueButton2.setLayout(new BorderLayout(0, 0));
+			pnContinueButton2.add(getBtnContinue2());
+			pnContinueButton2.add(getPnSouthGapContinue2(), BorderLayout.SOUTH);
+		}
+		return pnContinueButton2;
+	}
+	private JPanel getPnNorthGapButtons2() {
+		if (pnNorthGapButtons2 == null) {
+			pnNorthGapButtons2 = new JPanel();
+		}
+		return pnNorthGapButtons2;
+	}
+	private JPanel getPnSouthGapContinue2() {
+		if (pnSouthGapContinue2 == null) {
+			pnSouthGapContinue2 = new JPanel();
+		}
+		return pnSouthGapContinue2;
 	}
 }
