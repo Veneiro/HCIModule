@@ -135,6 +135,10 @@ public class MainWindow extends JFrame {
 	private JPanel pnSouth5;
 	private JPanel pnObservations5;
 	private JPanel pnTitle5;
+	private JPanel pnHelpLang;
+	private JPanel pnContinueButton2;
+	private JPanel pnNorthGapButtons2;
+	private JPanel pnSouthGapContinue2;
 
 	// LABELS
 	private JLabel lblTitle;
@@ -178,6 +182,8 @@ public class MainWindow extends JFrame {
 	private JButton btnBack5;
 	private JButton btnContinue5;
 	private JButton btnAssignDate5;
+	private JButton btnEnglish;
+	private JButton btnSpanish;
 
 	// SLIDERS
 	private JSlider slResize;
@@ -216,12 +222,6 @@ public class MainWindow extends JFrame {
 	private DefaultListModel dlmGifts = new DefaultListModel();
 	private MyButtonListener mbl = new MyButtonListener();
 	private DefaultComboBoxModel<Travel> dcbTravelmodel = new DefaultComboBoxModel<Travel>();
-	private JPanel pnHelpLang;
-	private JButton btnEnglish;
-	private JButton btnSpanish;
-	private JPanel pnContinueButton2;
-	private JPanel pnNorthGapButtons2;
-	private JPanel pnSouthGapContinue2;
 
 	/**
 	 * Create the frame.
@@ -285,24 +285,41 @@ public class MainWindow extends JFrame {
 
 		texts = ResourceBundle.getBundle("rcs/messages", localization);
 
+		// Translation for the first panel
 		getLblChangeSize().setText(texts.getString("lblSize12"));
 		getLblTitle().setText(texts.getString("lblTitle1"));
 		getLblContinue().setText(texts.getString("lblSubtitle1"));
 		getBtnContinue().setText(texts.getString("buttonContinue1"));
+		getBtnContinue().setToolTipText((texts.getString("btnContinueTT1")));
 		getBtnHelp().setText(texts.getString("buttonHelp1"));
+		getBtnHelp().setToolTipText(texts.getString("btnHelpTT1"));
+		getSlResize().setToolTipText(texts.getString("ttSlSize1"));
+		getBtnEnglish().setToolTipText(texts.getString("buttonEnglishTT1"));
+		getBtnSpanish().setToolTipText(texts.getString("buttonSpanishTT1"));
 
+		// Translation for the second panel
 		getLblTitleLoyalty().setText(texts.getString("lblTitle2"));
 		getLblChangeSize_2().setText(texts.getString("lblSize12"));
 		getLblSubtitleLoyalty().setText(texts.getString("lblSubtitle2"));
 		getLblIntroduceCode().setText(texts.getString("lblCodeTitle"));
 		getBtnContinue2().setText(texts.getString("buttonContinue2345"));
 		getBtnBack2().setText(texts.getString("buttonBack235"));
+		getSlResize_2().setToolTipText(texts.getString("ttSlSize1"));
+		getTxtCode().setToolTipText(texts.getString("textCode2TT"));
+		getBtnBack2().setToolTipText(texts.getString("buttonBack2TT"));
+		getBtnContinue2().setToolTipText(texts.getString("buttonContinue2TT"));
 
+		// Translation for the third panel
 		getLblTitle3().setText(texts.getString("lblTitle3"));
 		getBtnHelp3().setText(texts.getString("buttonHelp3"));
 		getBtnContinue3().setText(texts.getString("buttonContinue2345"));
 		getBtnBack3().setText(texts.getString("buttonBack235"));
+		getSlResize_3().setToolTipText(texts.getString("ttSlSize1"));
+		getBtnBack3().setToolTipText(texts.getString("buttonBack2TT"));
+		getBtnContinue3().setToolTipText(texts.getString("buttonContinueTT3"));
+		getBtnHelp3().setToolTipText(texts.getString("btnHelpTT3"));
 
+		// Translation for the fourth panel
 		getLblSelectYourGifts4().setText(texts.getString("lblTitle4"));
 		getLblRemainingPoints4()
 				.setText(texts.getString("lblRemainingPointsTitle4"));
@@ -314,7 +331,15 @@ public class MainWindow extends JFrame {
 		getLblRedeemedGifts4()
 				.setText(texts.getString("lblRedeemedGiftsTitle4"));
 		getBtnContinue4().setText(texts.getString("buttonContinue2345"));
+		getSlResize_4().setToolTipText(texts.getString("ttSlSize1"));
+		getCbCategory().setToolTipText(texts.getString("cbCategoryTT4"));
+		getCbOrder().setToolTipText(texts.getString("cbOrderTT4"));
+		getBtnAdd4().setToolTipText(texts.getString("btnAddTT4"));
+		getBtnRemove4().setToolTipText(texts.getString("btnRemoveTT4"));
+		getBtnContinue4().setToolTipText(texts.getString("btnContinueTT4"));
+		getCbGifts().setToolTipText(texts.getString("cbGiftsTT4"));
 
+		// Translation for the fifth panel
 		getLblTitle5().setText(texts.getString("lblTitle5"));
 		getLblSelectTravel()
 				.setText(texts.getString("lblRedeemedTravelsTitle5"));
@@ -322,10 +347,18 @@ public class MainWindow extends JFrame {
 		getLblObservations().setText(texts.getString("lblObservations"));
 		getBtnContinue5().setText(texts.getString("buttonContinue2345"));
 		getBtnBack5().setText(texts.getString("buttonBack235"));
+		getSlResize_5().setToolTipText(texts.getString("ttSlSize1"));
+		getBtnContinue5().setToolTipText(texts.getString("btnContinueTT5"));
+		getTxtObservations()
+				.setToolTipText(texts.getString("txtObservationsTT5"));
+		getBtnAssignDate5().setToolTipText(texts.getString("btnAssignDateTT5"));
 		
+
+		// Translation for the sixth panel
 		getLblTitle6().setText(texts.getString("lblTitle6"));
 		getLblSubtitle6().setText(texts.getString("lblSubtitle6"));
 		getBtnExit6().setText(texts.getString("buttonExit6"));
+		getBtnExit6().setToolTipText(texts.getString("btnExitTT6"));
 	}
 
 	private JPanel getPnMainContent() {
@@ -2214,6 +2247,7 @@ public class MainWindow extends JFrame {
 		}
 		return btnSpanish;
 	}
+
 	private JPanel getPnContinueButton2() {
 		if (pnContinueButton2 == null) {
 			pnContinueButton2 = new JPanel();
@@ -2223,12 +2257,14 @@ public class MainWindow extends JFrame {
 		}
 		return pnContinueButton2;
 	}
+
 	private JPanel getPnNorthGapButtons2() {
 		if (pnNorthGapButtons2 == null) {
 			pnNorthGapButtons2 = new JPanel();
 		}
 		return pnNorthGapButtons2;
 	}
+
 	private JPanel getPnSouthGapContinue2() {
 		if (pnSouthGapContinue2 == null) {
 			pnSouthGapContinue2 = new JPanel();
