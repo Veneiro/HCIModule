@@ -60,4 +60,18 @@ public class Person {
 		this.can_play = can_play;
 	}
 
+	@Override
+	public String toString() {
+		return id_cliente + "@"
+				+ Name_Surname + "@" + toCanPlay();
+	}
+
+	private String toCanPlay() {
+		if(isCan_play()) {
+			return "1";
+		} else {
+			return "0";
+		}
+	}
+
 }

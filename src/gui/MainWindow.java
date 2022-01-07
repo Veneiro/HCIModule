@@ -210,11 +210,8 @@ public class MainWindow extends JFrame {
 	// TEXT AREA
 	private JTextArea txtObservations;
 
-	// LOGIC CLASSES
+	// MANUAL GENERATED CLASSES
 	private Game game = new Game(0, 3);
-	private Clients cli = new Clients();
-	private Gifts gf = new Gifts();
-	private Travels travels = new Travels();
 	private LocalDateTime ldt = LocalDateTime.now();
 	private ResourceBundle texts;
 
@@ -766,9 +763,10 @@ public class MainWindow extends JFrame {
 								.setDefaultButton(getBtnContinue3());
 					} else {
 						JOptionPane.showMessageDialog(rootPane,
-								"Your Client ID is not in the Data Base or is "
-										+ "incorrectly introduced, please check "
-										+ "it again");
+								"Your Client ID is not in the Data Base, is "
+										+ "incorrectly introduced or you "
+										+ "already played, please check the "
+										+ "the code again");
 					}
 				}
 			});
@@ -777,8 +775,8 @@ public class MainWindow extends JFrame {
 	}
 
 	private boolean checkCode(String code) {
-		for (Person p : cli.getClients()) {
-			if (code.equals(p.getId_cliente())) {
+		for (Person p : game.returnClients()) {
+			if (code.equals(p.getId_cliente()) && p.isCan_play()) {
 				return true;
 			}
 		}
@@ -1488,7 +1486,7 @@ public class MainWindow extends JFrame {
 							ListModel<Gift> d = getRedeemedGiftList()
 									.getModel();
 							if (dcbTravelmodel.getSize() != 0) {
-								travels.setTravels(new ArrayList<Travel>());
+								game.setTravelList((new ArrayList<Travel>())); 
 								dcbTravelmodel.removeAllElements();
 							}
 							for (int i = 0; i < d.getSize(); i++) {
@@ -1500,21 +1498,21 @@ public class MainWindow extends JFrame {
 											ldt.getDayOfMonth(),
 											ldt.getMonthValue(),
 											Year.MIN_VALUE + ldt.getYear(), "");
-									travels.add(t);
+									game.addTravelToList(t);
 								} else {
 									game.addRedeemedGift((d.getElementAt(i)));
 								}
 							}
-							if (travels.getTravels().size() == 0) {
+							if (game.returnTravels().size() == 0) {
 								FileUtil.saveToFile("deliveries",
 										game.getClientLogged(),
 										game.getRedeemedGifts(),
-										travels.getTravels());
+										game.returnTravels());
 								crd.show(getContentPane(), "pn6");
 								getPnFinish().getRootPane()
 										.setDefaultButton(getBtnExit6());
 							} else {
-								for (Travel t : travels.getTravels()) {
+								for (Travel t : game.returnTravels()) {
 									dcbTravelmodel.addElement(t);
 								}
 								cbRedeemedTravels.setModel(dcbTravelmodel);
@@ -1527,7 +1525,7 @@ public class MainWindow extends JFrame {
 					} else { // You spend all your points
 						ListModel<Gift> d = getRedeemedGiftList().getModel();
 						if (dcbTravelmodel.getSize() != 0) {
-							travels.setTravels(new ArrayList<Travel>());
+							game.setTravelList((new ArrayList<Travel>()));
 							dcbTravelmodel.removeAllElements();
 						}
 						for (int i = 0; i < d.getSize(); i++) {
@@ -1538,20 +1536,20 @@ public class MainWindow extends JFrame {
 										ldt.getDayOfMonth(),
 										ldt.getMonthValue(),
 										Year.MIN_VALUE + ldt.getYear(), "");
-								travels.add(t);
+								game.addTravelToList(t);
 							} else {
 								game.addRedeemedGift((d.getElementAt(i)));
 							}
 						}
 						// No travels selected
-						if (travels.getTravels().size() == 0) {
+						if (game.returnTravels().size() == 0) {
 							FileUtil.saveToFile("deliveries",
 									game.getClientLogged(),
 									game.getRedeemedGifts(),
-									travels.getTravels());
+									game.returnTravels());
 							crd.show(getContentPane(), "pn6");
 						} else { // One or more travels selected
-							for (Travel t : travels.getTravels()) {
+							for (Travel t : game.returnTravels()) {
 								dcbTravelmodel.addElement(t);
 							}
 							cbRedeemedTravels.setModel(dcbTravelmodel);
@@ -1605,7 +1603,7 @@ public class MainWindow extends JFrame {
 					case "All":
 						dcbgiftm = new DefaultComboBoxModel();
 						dcbgiftm.addElement("Select A Gift...");
-						for (Gift g : gf.getGifts()) {
+						for (Gift g : game.returnGifts()) {
 							dcbgiftm.addElement(g);
 						}
 						getCbGifts().setModel(dcbgiftm);
@@ -1614,7 +1612,7 @@ public class MainWindow extends JFrame {
 					case "Food":
 						dcbgiftm = new DefaultComboBoxModel();
 						dcbgiftm.addElement("Select A Gift...");
-						for (Gift g : gf.getGifts()) {
+						for (Gift g : game.returnGifts()) {
 							if (g.getSection().equals("F")) {
 								dcbgiftm.addElement(g);
 							}
@@ -1625,7 +1623,7 @@ public class MainWindow extends JFrame {
 					case "Sports":
 						dcbgiftm = new DefaultComboBoxModel();
 						dcbgiftm.addElement("Select A Gift...");
-						for (Gift g : gf.getGifts()) {
+						for (Gift g : game.returnGifts()) {
 							if (g.getSection().equals("S")) {
 								dcbgiftm.addElement(g);
 							}
@@ -1636,7 +1634,7 @@ public class MainWindow extends JFrame {
 					case "Electronics":
 						dcbgiftm = new DefaultComboBoxModel();
 						dcbgiftm.addElement("Select A Gift...");
-						for (Gift g : gf.getGifts()) {
+						for (Gift g : game.returnGifts()) {
 							if (g.getSection().equals("E")) {
 								dcbgiftm.addElement(g);
 							}
@@ -1647,7 +1645,7 @@ public class MainWindow extends JFrame {
 					case "Toys":
 						dcbgiftm = new DefaultComboBoxModel();
 						dcbgiftm.addElement("Select A Gift...");
-						for (Gift g : gf.getGifts()) {
+						for (Gift g : game.returnGifts()) {
 							if (g.getSection().equals("T")) {
 								dcbgiftm.addElement(g);
 							}
@@ -1658,7 +1656,7 @@ public class MainWindow extends JFrame {
 					case "Travel and Experiences":
 						dcbgiftm = new DefaultComboBoxModel();
 						dcbgiftm.addElement("Select A Gift...");
-						for (Gift g : gf.getGifts()) {
+						for (Gift g : game.returnGifts()) {
 							if (g.getSection().equals("V")) {
 								dcbgiftm.addElement(g);
 							}
@@ -1698,7 +1696,7 @@ public class MainWindow extends JFrame {
 					}
 
 					for (Gift elem : auxStr) {
-						for (Gift gift : gf.getGifts()) {
+						for (Gift gift : game.returnGifts()) {
 							if (gift.getName().equals(elem.getName())) {
 								aux.add(gift);
 							}
@@ -1812,7 +1810,7 @@ public class MainWindow extends JFrame {
 				}
 			});
 			this.dcbgiftm.addElement("Select A Gift...");
-			for (Gift g : gf.getGifts()) {
+			for (Gift g : game.returnGifts()) {
 				dcbgiftm.addElement(g);
 			}
 			cbGifts.setModel(dcbgiftm);
@@ -1857,9 +1855,9 @@ public class MainWindow extends JFrame {
 						Gift g = (Gift) getRedeemedGiftList()
 								.getSelectedValue();
 						if (g.getSection().equals("V")) {
-							for (Travel t : travels.getTravels()) {
+							for (Travel t : game.returnTravels()) {
 								if (t.getDescription().equals(g.getName())) {
-									travels.remove(t);
+									game.removeTravel(t);;
 								}
 							}
 						} else {
@@ -1965,6 +1963,7 @@ public class MainWindow extends JFrame {
 			btnExit6.setToolTipText("Exit and claim your gifts");
 			btnExit6.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					game.setPlayed();
 					close();
 					reinitializate();
 					getPnMainWindow().getRootPane()
@@ -2064,7 +2063,7 @@ public class MainWindow extends JFrame {
 			btnContinue5.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					FileUtil.saveToFile("deliveries", game.getClientLogged(),
-							game.getRedeemedGifts(), travels.getTravels());
+							game.getRedeemedGifts(), game.returnTravels());
 					crd.next(getContentPane());
 					getPnFinish().getRootPane().setDefaultButton(getBtnExit6());
 				}
@@ -2087,7 +2086,7 @@ public class MainWindow extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					Travel t = (Travel) getCbRedeemedTravels()
 							.getSelectedItem();
-					for (Travel travel : travels.getTravels()) {
+					for (Travel travel : game.returnTravels()) {
 						if (travel.equals(t)) {
 
 							if (!getTravelCalendar().getDate()
@@ -2123,7 +2122,7 @@ public class MainWindow extends JFrame {
 	}
 
 	private boolean allDatesAssigned() {
-		for (Travel travel : travels.getTravels()) {
+		for (Travel travel : game.returnTravels()) {
 			if (!travel.isDateAssigned()) {
 				return false;
 			}

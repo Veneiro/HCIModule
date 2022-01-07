@@ -3,12 +3,17 @@ package logic;
 import java.util.ArrayList;
 import java.util.List;
 
+import logic.util.FileUtil;
+
 public class Game {
 
 	private Integer remainingPoints = 0;
 	private Integer remainingTrys = 3;
 	private String clientLogged = "";
 	private List<Gift> redeemedGifts = new ArrayList<Gift>();
+	private Clients cli = new Clients();
+	private Gifts gf = new Gifts();
+	private Travels travels = new Travels();
 	
 	/**
 	 * @param remainingPoints
@@ -103,5 +108,38 @@ public class Game {
 		} else {
 			setRemainingPoints(getRemainingPoints() + valueOf);
 		}
+	}
+	
+	public List<Person> returnClients() {
+		return cli.getClients();
+	}
+	
+	public List<Travel> returnTravels(){
+		return travels.getTravels();
+	}
+	
+	public void setTravelList(ArrayList<Travel> travelList) {
+		travels.setTravels(travelList);
+	}
+	
+	public void addTravelToList(Travel t) {
+		travels.add(t);
+	}
+	
+	public List<Gift> returnGifts() {
+		return gf.getGifts();
+	}
+	
+	public void removeTravel(Travel t) {
+		travels.remove(t);
+	}
+	
+	public void setPlayed() {
+		for (Person p : cli.getClients()) {
+			if(p.getId_cliente().equals(clientLogged)) {
+				p.setCan_play(false);
+			}
+		}
+		FileUtil.updateClientFile(cli.getClients());
 	}
 }

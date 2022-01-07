@@ -81,16 +81,24 @@ public abstract class FileUtil {
 			new RuntimeException("I/O Error.");
 		}
 	}
-
-	public static String setFileName() {
-		String code = "";
-		String base = "0123456789abcdefghijklmnopqrstuvwxyz";
-		int length = 8;
-		for (int i = 0; i < length; i++) {
-			int numero = (int) (Math.random() * (base.length()));
-			code += base.charAt(numero);
+	
+	public static void updateClientFile(List<Person> clients) {
+		try {
+			BufferedWriter file = new BufferedWriter(
+					new FileWriter("resources/files/clients.dat"));
+			String line = "";
+			for (Person p : clients) {
+				line += p.toString() + "\n";
+			}
+			file.write(line);
+			file.close();
 		}
-		return code;
+
+		catch (FileNotFoundException fnfe) {
+			System.out.println("The file could not be saved.");
+		} catch (IOException ioe) {
+			new RuntimeException("I/O Error.");
+		}
 	}
 
 	private static boolean returnPersonCanPlay(Integer value) {
