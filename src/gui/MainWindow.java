@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -58,6 +59,8 @@ import logic.Travels;
 import logic.comparators.ByPointsComparator;
 import logic.comparators.BySecctionComparator;
 import logic.util.FileUtil;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 @SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 public class MainWindow extends JFrame {
@@ -230,6 +233,8 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1063, 668);
 		setLocationRelativeTo(null);
+		this.setMinimumSize(new Dimension(977, 487));
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -270,8 +275,8 @@ public class MainWindow extends JFrame {
 		HelpBroker hb = hs.createHelpBroker();
 
 		hb.enableHelpKey(getRootPane(), "intro", hs);
-		hb.enableHelpOnButton(getBtnHelp3(), "howtoplay", hs);
 		hb.enableHelpOnButton(getBtnHelp(), "intro", hs);
+		hb.enableHelpOnButton(getBtnHelp3(), "howtoplay", hs);
 		hb.enableHelp(getPnSizeSlider(), "lettersize", hs);
 		hb.enableHelp(getPnSizeSlider_2(), "lettersize", hs);
 		hb.enableHelp(getPnSizeSlider_3(), "lettersize", hs);
@@ -290,9 +295,15 @@ public class MainWindow extends JFrame {
 		getBtnContinue().setToolTipText((texts.getString("btnContinueTT1")));
 		getBtnHelp().setText(texts.getString("buttonHelp1"));
 		getBtnHelp().setToolTipText(texts.getString("btnHelpTT1"));
+		getBtnHelp()
+				.setMnemonic(texts.getString("buttonHelpMnemonic1").charAt(0));
 		getSlResize().setToolTipText(texts.getString("ttSlSize1"));
 		getBtnEnglish().setToolTipText(texts.getString("buttonEnglishTT1"));
+		getBtnEnglish().setMnemonic(
+				texts.getString("buttonEnglishMnemonic1").charAt(0));
 		getBtnSpanish().setToolTipText(texts.getString("buttonSpanishTT1"));
+		getBtnSpanish().setMnemonic(
+				texts.getString("buttonSpanishMnemonic1").charAt(0));
 
 		// Translation for the second panel
 		getLblTitleLoyalty().setText(texts.getString("lblTitle2"));
@@ -309,12 +320,14 @@ public class MainWindow extends JFrame {
 		// Translation for the third panel
 		getLblTitle3().setText(texts.getString("lblTitle3"));
 		getBtnHelp3().setText(texts.getString("buttonHelp3"));
+		getBtnHelp3()
+				.setMnemonic(texts.getString("buttonHelpMnemonic3").charAt(0));
+		getBtnHelp3().setToolTipText(texts.getString("btnHelpTT3"));
 		getBtnContinue3().setText(texts.getString("buttonContinue2345"));
 		getBtnBack3().setText(texts.getString("buttonBack235"));
 		getSlResize_3().setToolTipText(texts.getString("ttSlSize1"));
 		getBtnBack3().setToolTipText(texts.getString("buttonBack2TT"));
 		getBtnContinue3().setToolTipText(texts.getString("buttonContinueTT3"));
-		getBtnHelp3().setToolTipText(texts.getString("btnHelpTT3"));
 
 		// Translation for the fourth panel
 		getLblSelectYourGifts4().setText(texts.getString("lblTitle4"));
@@ -322,7 +335,11 @@ public class MainWindow extends JFrame {
 				.setText(texts.getString("lblRemainingPointsTitle4"));
 		getLblGifts().setText(texts.getString("lblGiftsTitle4"));
 		getBtnAdd4().setText(texts.getString("buttonAdd4"));
+		getBtnAdd4()
+				.setMnemonic(texts.getString("buttonAddMnemonic4").charAt(0));
 		getBtnRemove4().setText(texts.getString("buttonRemove4"));
+		getBtnRemove4().setMnemonic(
+				texts.getString("buttonRemoveMnemonic4").charAt(0));
 		getLblCategory4().setText(texts.getString("lblCategory4"));
 		getLblOrder4().setText(texts.getString("lblOrder4"));
 		getLblRedeemedGifts4()
@@ -349,13 +366,16 @@ public class MainWindow extends JFrame {
 		getTxtObservations()
 				.setToolTipText(texts.getString("txtObservationsTT5"));
 		getBtnAssignDate5().setToolTipText(texts.getString("btnAssignDateTT5"));
-		
+		getBtnAssignDate5().setMnemonic(
+				texts.getString("buttonAssignDateMnemonic").charAt(0));
 
 		// Translation for the sixth panel
 		getLblTitle6().setText(texts.getString("lblTitle6"));
 		getLblSubtitle6().setText(texts.getString("lblSubtitle6"));
 		getBtnExit6().setText(texts.getString("buttonExit6"));
 		getBtnExit6().setToolTipText(texts.getString("btnExitTT6"));
+		getBtnExit6()
+				.setMnemonic(texts.getString("buttonExitMnemonic6").charAt(0));
 	}
 
 	private JPanel getPnMainContent() {
@@ -455,9 +475,10 @@ public class MainWindow extends JFrame {
 	private JButton getBtnHelp() {
 		if (btnHelp == null) {
 			btnHelp = new JButton("HELP");
+			btnHelp.setForeground(new Color(0, 0, 0));
 			btnHelp.setToolTipText("Get some help to start in the app");
 			btnHelp.setMnemonic('H');
-			btnHelp.setBackground(new Color(255, 255, 0));
+			btnHelp.setBackground(new Color(255, 215, 0));
 			btnHelp.setFont(new Font("Tahoma", Font.BOLD, 18));
 		}
 		return btnHelp;
@@ -599,6 +620,7 @@ public class MainWindow extends JFrame {
 	private JPanel getPnSelectYourGifts() {
 		if (pnSelectYourGifts == null) {
 			pnSelectYourGifts = new JPanel();
+			pnSelectYourGifts.setForeground(new Color(255, 255, 255));
 			pnSelectYourGifts.setLayout(new BorderLayout(0, 0));
 			pnSelectYourGifts.add(getPnNorth4(), BorderLayout.NORTH);
 			pnSelectYourGifts.add(getPnCenter4(), BorderLayout.CENTER);
@@ -750,8 +772,9 @@ public class MainWindow extends JFrame {
 	private JButton getBtnContinue2() {
 		if (btnContinue2 == null) {
 			btnContinue2 = new JButton("CONTINUE");
+			btnContinue2.setForeground(new Color(255, 255, 255));
 			btnContinue2.setToolTipText("Continue to the game board");
-			btnContinue2.setBackground(Color.GREEN);
+			btnContinue2.setBackground(new Color(0, 128, 0));
 			btnContinue2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			btnContinue2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -821,8 +844,9 @@ public class MainWindow extends JFrame {
 	private JButton getBtnBack2() {
 		if (btnBack2 == null) {
 			btnBack2 = new JButton("BACK");
+			btnBack2.setForeground(new Color(255, 255, 255));
 			btnBack2.setToolTipText("Go to the previous window");
-			btnBack2.setBackground(Color.RED);
+			btnBack2.setBackground(new Color(178, 34, 34));
 			btnBack2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			btnBack2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -1042,6 +1066,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnContinue3() {
 		if (btnContinue3 == null) {
 			btnContinue3 = new JButton("CONTINUE");
+			btnContinue3.setForeground(new Color(255, 255, 255));
 			btnContinue3
 					.setToolTipText("Continue and redeem your prefered gifts");
 			btnContinue3.addActionListener(new ActionListener() {
@@ -1064,7 +1089,7 @@ public class MainWindow extends JFrame {
 				}
 			});
 			btnContinue3.setFont(new Font("Tahoma", Font.BOLD, 20));
-			btnContinue3.setBackground(Color.GREEN);
+			btnContinue3.setBackground(new Color(0, 128, 0));
 			btnContinue3.setEnabled(false);
 		}
 		return btnContinue3;
@@ -1077,6 +1102,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnBack3() {
 		if (btnBack3 == null) {
 			btnBack3 = new JButton("BACK");
+			btnBack3.setForeground(new Color(255, 255, 255));
 			btnBack3.setToolTipText("Go to the previous window");
 			btnBack3.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -1084,7 +1110,7 @@ public class MainWindow extends JFrame {
 				}
 			});
 			btnBack3.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			btnBack3.setBackground(Color.RED);
+			btnBack3.setBackground(new Color(178, 34, 34));
 		}
 		return btnBack3;
 	}
@@ -1101,6 +1127,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnHelp3() {
 		if (btnHelp3 == null) {
 			btnHelp3 = new JButton("IT'S YOUR FIRST TIME? CLICK HERE");
+			btnHelp3.setMnemonic('H');
 			btnHelp3.setToolTipText("Get some help to play the game");
 			btnHelp3.setFont(new Font("Tahoma", Font.BOLD, 20));
 		}
@@ -1464,6 +1491,7 @@ public class MainWindow extends JFrame {
 	private JLabel getLblImage() {
 		if (lblImage == null) {
 			lblImage = new JLabel("");
+			lblImage.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lblImage;
 	}
@@ -1472,7 +1500,7 @@ public class MainWindow extends JFrame {
 		if (btnContinue4 == null) {
 			btnContinue4 = new JButton("CONTINUE");
 			btnContinue4.setToolTipText("Continue to the next window");
-			btnContinue4.setBackground(Color.GREEN);
+			btnContinue4.setBackground(new Color(0, 128, 0));
 			btnContinue4.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// You didn't spend all the points
@@ -1486,7 +1514,7 @@ public class MainWindow extends JFrame {
 							ListModel<Gift> d = getRedeemedGiftList()
 									.getModel();
 							if (dcbTravelmodel.getSize() != 0) {
-								game.setTravelList((new ArrayList<Travel>())); 
+								game.setTravelList((new ArrayList<Travel>()));
 								dcbTravelmodel.removeAllElements();
 							}
 							for (int i = 0; i < d.getSize(); i++) {
@@ -1857,7 +1885,8 @@ public class MainWindow extends JFrame {
 						if (g.getSection().equals("V")) {
 							for (Travel t : game.returnTravels()) {
 								if (t.getDescription().equals(g.getName())) {
-									game.removeTravel(t);;
+									game.removeTravel(t);
+									;
 								}
 							}
 						} else {
@@ -1960,6 +1989,7 @@ public class MainWindow extends JFrame {
 	private JButton getBtnExit6() {
 		if (btnExit6 == null) {
 			btnExit6 = new JButton("EXIT");
+			btnExit6.setForeground(new Color(255, 255, 255));
 			btnExit6.setToolTipText("Exit and claim your gifts");
 			btnExit6.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -1970,7 +2000,7 @@ public class MainWindow extends JFrame {
 							.setDefaultButton(getBtnContinue());
 				}
 			});
-			btnExit6.setBackground(Color.GREEN);
+			btnExit6.setBackground(new Color(0, 128, 0));
 			btnExit6.setFont(new Font("Tahoma", Font.BOLD, 40));
 		}
 		return btnExit6;
@@ -2049,7 +2079,7 @@ public class MainWindow extends JFrame {
 					crd.previous(getContentPane());
 				}
 			});
-			btnBack5.setBackground(Color.RED);
+			btnBack5.setBackground(new Color(178, 34, 34));
 			btnBack5.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
 		return btnBack5;
@@ -2068,7 +2098,7 @@ public class MainWindow extends JFrame {
 					getPnFinish().getRootPane().setDefaultButton(getBtnExit6());
 				}
 			});
-			btnContinue5.setBackground(Color.GREEN);
+			btnContinue5.setBackground(new Color(0, 128, 0));
 			btnContinue5.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
 		return btnContinue5;
