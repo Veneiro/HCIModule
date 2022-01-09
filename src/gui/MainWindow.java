@@ -221,6 +221,7 @@ public class MainWindow extends JFrame {
 	private JLabel lblTitlePoints3;
 	private JLabel lblPointsCount3;
 
+	//DIALOG TEXTS FOR TRANSLATION
 	private String notAllPointsExpent = "You didn't expend all your POINTS, the "
 			+ "remaining points will be lost " + "forever.\n "
 			+ "You really want to continue?";
