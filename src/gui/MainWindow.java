@@ -48,19 +48,14 @@ import javax.swing.event.ChangeListener;
 
 import com.toedter.calendar.JCalendar;
 
-import logic.Clients;
 import logic.Game;
 import logic.Gift;
-import logic.Gifts;
 import logic.Main;
 import logic.Person;
 import logic.Travel;
-import logic.Travels;
 import logic.comparators.ByPointsComparator;
 import logic.comparators.BySecctionComparator;
 import logic.util.FileUtil;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 @SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 public class MainWindow extends JFrame {
@@ -222,6 +217,27 @@ public class MainWindow extends JFrame {
 	private DefaultListModel dlmGifts = new DefaultListModel();
 	private MyButtonListener mbl = new MyButtonListener();
 	private DefaultComboBoxModel<Travel> dcbTravelmodel = new DefaultComboBoxModel<Travel>();
+	private JPanel pnPoints3;
+	private JLabel lblTitlePoints3;
+	private JLabel lblPointsCount3;
+
+	private String notAllPointsExpent = "You didn't expend all your POINTS, the "
+			+ "remaining points will be lost " + "forever.\n "
+			+ "You really want to continue?";
+	private String notEnoughtPointsToClaim = "You don't have"
+			+ " enought points to claim this item";
+	private String selectToRemove = "Please select "
+			+ "an item from the list to remove it";
+	private String noValidDate = "The selected date is not valid, "
+			+ "please select a valid date";
+	private String noValidClientID = "Your Client ID is not in the Data Base, is "
+			+ "incorrectly introduced or you "
+			+ "already played, please check the " + "the code again";
+	private String noPointsObtained = "You didn't get"
+			+ " any points, hope you have better luck next "
+			+ "time! The app will reset";
+	private String win1000Points = "You win 1000 points!!";
+	private String pointsX2 = "Points Multiplied By 2!!!";
 
 	/**
 	 * Create the frame.
@@ -234,7 +250,7 @@ public class MainWindow extends JFrame {
 		setBounds(100, 100, 1063, 668);
 		setLocationRelativeTo(null);
 		this.setMinimumSize(new Dimension(977, 487));
-		
+
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -376,6 +392,17 @@ public class MainWindow extends JFrame {
 		getBtnExit6().setToolTipText(texts.getString("btnExitTT6"));
 		getBtnExit6()
 				.setMnemonic(texts.getString("buttonExitMnemonic6").charAt(0));
+
+		// Dialogs Translation
+		notAllPointsExpent = texts.getString("notAllPointsExpentDialog");
+		notEnoughtPointsToClaim = texts
+				.getString("notEnoughPointsToClaimDialog");
+		selectToRemove = texts.getString("selectToRemoveDialog");
+		noValidDate = texts.getString("noValidDateDialog");
+		noValidClientID = texts.getString("noValidClientIDDialog");
+		noPointsObtained = texts.getString("noPointsObtainedDialog");
+		win1000Points = texts.getString("win1000PointsDialog");
+		pointsX2 = texts.getString("pointsX2Dialog");
 	}
 
 	private JPanel getPnMainContent() {
@@ -786,10 +813,7 @@ public class MainWindow extends JFrame {
 								.setDefaultButton(getBtnContinue3());
 					} else {
 						JOptionPane.showMessageDialog(rootPane,
-								"Your Client ID is not in the Data Base, is "
-										+ "incorrectly introduced or you "
-										+ "already played, please check the "
-										+ "the code again");
+								noValidClientID);
 					}
 				}
 			});
@@ -1011,6 +1035,7 @@ public class MainWindow extends JFrame {
 			pnSizeSlider_3.setLayout(new GridLayout(3, 1, 0, 0));
 			pnSizeSlider_3.add(getPnNorthGapSizeSlider3());
 			pnSizeSlider_3.add(getSlResize_3());
+			pnSizeSlider_3.add(getPnPoints3());
 		}
 		return pnSizeSlider_3;
 	}
@@ -1045,6 +1070,12 @@ public class MainWindow extends JFrame {
 						getBtnHelp3().setFont(new Font("Tahoma", Font.BOLD,
 								20 + slResize_3.getValue()));
 					}
+					if (slResize_3.getValue() < 34) {
+						getLblTitlePoints3().setFont(new Font("Tahoma",
+								Font.BOLD, 15 + slResize_3.getValue()));
+						getLblPointsCount3().setFont(new Font("Tahoma",
+								Font.BOLD, 15 + slResize_3.getValue()));
+					}
 				}
 			});
 			slResize_3.setValue(0);
@@ -1072,9 +1103,8 @@ public class MainWindow extends JFrame {
 			btnContinue3.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (game.getRemainingPoints() == 0) {
-						JOptionPane.showMessageDialog(rootPane, "You didn't get"
-								+ " any points, hope you have better luck next "
-								+ "time! The app will reset");
+						JOptionPane.showMessageDialog(rootPane,
+								noPointsObtained);
 						close();
 						reinitializate();
 						getPnMainWindow().getRootPane()
@@ -1308,8 +1338,21 @@ public class MainWindow extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (game.getRemainingTrys() > 0) {
 				game.addPoints(Integer.valueOf(e.getActionCommand()));
+				if (e.getActionCommand().equals("1000")) {
+					JOptionPane.showMessageDialog(rootPane, win1000Points);
+				}
+				if (e.getActionCommand().equals("-1")) {
+					((JButton) e.getSource()).setText("One More Time!");
+				} else if (e.getActionCommand().equals("-2")) {
+					((JButton) e.getSource()).setText("X2");
+					JOptionPane.showMessageDialog(rootPane, pointsX2);
+				} else {
+					((JButton) e.getSource()).setText(e.getActionCommand());
+				}
 				((JButton) e.getSource()).setEnabled(false);
 				getLblPointsCount()
+						.setText(String.valueOf(game.getRemainingPoints()));
+				getLblPointsCount3()
 						.setText(String.valueOf(game.getRemainingPoints()));
 			}
 			if (game.getRemainingTrys() == 0) {
@@ -1506,10 +1549,7 @@ public class MainWindow extends JFrame {
 					// You didn't spend all the points
 					if (game.getRemainingPoints() > 0) {
 						switch (JOptionPane.showConfirmDialog(rootPane,
-								"You didn't expend all your POINTS, the "
-										+ "remaining points will be lost "
-										+ "forever.\n "
-										+ "You really want to continue?")) {
+								notAllPointsExpent)) {
 						case 0:
 							ListModel<Gift> d = getRedeemedGiftList()
 									.getModel();
@@ -1863,8 +1903,8 @@ public class MainWindow extends JFrame {
 						getLblPointsCount().setText(
 								String.valueOf(game.getRemainingPoints()));
 					} else {
-						JOptionPane.showMessageDialog(rootPane, "You don't have"
-								+ " enought points to claim this item");
+						JOptionPane.showMessageDialog(rootPane,
+								notEnoughtPointsToClaim);
 					}
 				}
 			});
@@ -1899,8 +1939,7 @@ public class MainWindow extends JFrame {
 						getLblPointsCount().setText(
 								String.valueOf(game.getRemainingPoints()));
 					} else {
-						JOptionPane.showMessageDialog(rootPane, "Please select "
-								+ "an item from the list to remove it");
+						JOptionPane.showMessageDialog(rootPane, selectToRemove);
 					}
 				}
 			});
@@ -2134,8 +2173,7 @@ public class MainWindow extends JFrame {
 								t.setDateAssigned(true);
 							} else {
 								JOptionPane.showMessageDialog(rootPane,
-										"The selected date is not valid, "
-												+ "please select a valid date");
+										noValidDate);
 							}
 						}
 					}
@@ -2299,5 +2337,30 @@ public class MainWindow extends JFrame {
 			pnSouthGapContinue2 = new JPanel();
 		}
 		return pnSouthGapContinue2;
+	}
+
+	private JPanel getPnPoints3() {
+		if (pnPoints3 == null) {
+			pnPoints3 = new JPanel();
+			pnPoints3.add(getLblTitlePoints3());
+			pnPoints3.add(getLblPointsCount3());
+		}
+		return pnPoints3;
+	}
+
+	private JLabel getLblTitlePoints3() {
+		if (lblTitlePoints3 == null) {
+			lblTitlePoints3 = new JLabel("Points:");
+			lblTitlePoints3.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		}
+		return lblTitlePoints3;
+	}
+
+	private JLabel getLblPointsCount3() {
+		if (lblPointsCount3 == null) {
+			lblPointsCount3 = new JLabel("0");
+			lblPointsCount3.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		}
+		return lblPointsCount3;
 	}
 }
